@@ -10,7 +10,8 @@ public final class GithubUrlHandler extends BaseUrlHandler {
     public String parseUrl(String url) {
         Matcher matcher = githubUrlPattern.matcher(url);
         if (matcher.matches()) {
-            return matcher.group(1) + "/" + matcher.group(2);
+            String[] list = url.split("/");
+            return list[3] + "/" + list[4];
         } else {
             return next(url);
         }

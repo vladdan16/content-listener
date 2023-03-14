@@ -10,7 +10,8 @@ public final class StackOverflowUrlHandler extends BaseUrlHandler {
     public String parseUrl(String url) {
         Matcher matcher = stackOverflowUrlPattern.matcher(url);
         if (matcher.matches()) {
-            return matcher.group(1);
+            String[] list = url.split("/");
+            return list[4];
         } else {
             return next(url);
         }
