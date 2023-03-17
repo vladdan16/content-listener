@@ -1,12 +1,11 @@
 package org.example.linkparser;
 
-public abstract sealed class BaseUrlHandler implements UrlHandler permits GithubUrlHandler, StackOverflowUrlHandler {
+public abstract non-sealed class BaseUrlHandler implements UrlHandler {
     private UrlHandler nextHandler;
 
     @Override
-    public UrlHandler setNextHandler(UrlHandler nextHandler) {
+    public void setNextHandler(UrlHandler nextHandler) {
         this.nextHandler = nextHandler;
-        return nextHandler;
     }
 
     protected String next(String url) {
