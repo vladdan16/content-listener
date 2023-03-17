@@ -3,11 +3,22 @@ package org.example.linkparser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Handler for StackOverflow links
+ */
 public final class StackOverflowUrlHandler extends UrlHandler {
-    private static final Pattern stackOverflowUrlPattern = Pattern.compile("^https://stackoverflow\\.com/questions/\\d+/.+$");
+    /**
+     * Pattern for StackOverflow link
+     */
+    private final Pattern stackOverflowUrlPattern;
 
+    /**
+     * Child constructor that set a pattern for link
+     * @param nextHandler Handler that will be called next
+     */
     public StackOverflowUrlHandler(UrlHandler nextHandler) {
         super(nextHandler);
+        stackOverflowUrlPattern = Pattern.compile("^https://stackoverflow\\.com/questions/\\d+/.+$");
     }
 
     @Override

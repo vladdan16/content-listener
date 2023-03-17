@@ -3,11 +3,22 @@ package org.example.linkparser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Handler for GitHub links
+ */
 public final class GithubUrlHandler extends UrlHandler {
-    private static final Pattern githubUrlPattern = Pattern.compile("^https://github\\.com/[^/]+/[^/]+/$");
+    /**
+     * Pattern for Github link
+     */
+    private final Pattern githubUrlPattern;
 
+    /**
+     * Child constructor that set a pattern for link
+     * @param nextHandler Handler that will be called next
+     */
     public GithubUrlHandler(UrlHandler nextHandler) {
         super(nextHandler);
+        githubUrlPattern = Pattern.compile("^https://github\\.com/[^/]+/[^/]+/$");
     }
 
     @Override
