@@ -1,9 +1,12 @@
 package org.example.linkparser;
 
-public abstract class BaseUrlHandler {
-    private final BaseUrlHandler nextHandler;
+/**
+ * Abstract class
+ */
+public abstract class UrlHandler {
+    private final UrlHandler nextHandler;
 
-    public BaseUrlHandler(BaseUrlHandler nextHandler) {
+    public UrlHandler(UrlHandler nextHandler) {
         this.nextHandler = nextHandler;
     }
 

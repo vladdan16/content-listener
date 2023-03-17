@@ -3,10 +3,10 @@ package org.example.linkparser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class StackOverflowUrlHandler extends BaseUrlHandler {
+public final class StackOverflowUrlHandler extends UrlHandler {
     private static final Pattern stackOverflowUrlPattern = Pattern.compile("^https://stackoverflow\\.com/questions/\\d+/.+$");
 
-    public StackOverflowUrlHandler(BaseUrlHandler nextHandler) {
+    public StackOverflowUrlHandler(UrlHandler nextHandler) {
         super(nextHandler);
     }
 

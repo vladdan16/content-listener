@@ -3,10 +3,10 @@ package org.example.linkparser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class GithubUrlHandler extends BaseUrlHandler {
+public final class GithubUrlHandler extends UrlHandler {
     private static final Pattern githubUrlPattern = Pattern.compile("^https://github\\.com/[^/]+/[^/]+/$");
 
-    public GithubUrlHandler(BaseUrlHandler nextHandler) {
+    public GithubUrlHandler(UrlHandler nextHandler) {
         super(nextHandler);
     }
 

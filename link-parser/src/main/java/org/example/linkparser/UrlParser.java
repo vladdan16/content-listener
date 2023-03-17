@@ -1,7 +1,7 @@
 package org.example.linkparser;
 
 public class UrlParser {
-    private BaseUrlHandler chain;
+    private UrlHandler chain;
 
     public UrlParser() {
         buildChain();
