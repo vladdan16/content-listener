@@ -1,18 +1,17 @@
 package org.example.linkparser;
 
 public class UrlParser {
-    private final UrlHandler rootHandler;
+    private BaseUrlHandler chain;
 
     public UrlParser() {
-        GithubUrlHandler githubHandler = new GithubUrlHandler();
-        StackOverflowUrlHandler stackOverflowHandler = new StackOverflowUrlHandler();
-
-        githubHandler.setNextHandler(stackOverflowHandler);
-
-        rootHandler = githubHandler;
+        buildChain();
     }
 
-    public String parseUrl(String url) {
-        return rootHandler.parseUrl(url);
+    private void buildChain() {
+        chain = new GithubUrlHandler(new StackOverflowUrlHandler(null));
+    }
+
+    public ParseResult parseUrl(String url) {
+        return chain.parseUrl(url);
     }
 }

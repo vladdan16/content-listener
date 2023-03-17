@@ -1,17 +1,18 @@
 package org.example.linkparser;
 
-public abstract non-sealed class BaseUrlHandler implements UrlHandler {
-    private UrlHandler nextHandler;
+public abstract class BaseUrlHandler {
+    private final BaseUrlHandler nextHandler;
 
-    @Override
-    public void setNextHandler(UrlHandler nextHandler) {
+    public BaseUrlHandler(BaseUrlHandler nextHandler) {
         this.nextHandler = nextHandler;
     }
 
-    protected String next(String url) {
+    protected ParseResult next(String url) {
         if (nextHandler != null) {
             return nextHandler.parseUrl(url);
         }
         return null;
     }
+
+    public abstract ParseResult parseUrl(String url);
 }
