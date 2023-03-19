@@ -1,4 +1,5 @@
 package org.example.bot.dto;
 
-public interface LinkUpdateResponse {
+
+public record LinkUpdateResponse(String description) {
 }
