@@ -17,7 +17,7 @@ import java.util.List;
 public class BotController {
 
     @PostMapping
-    public ResponseEntity<LinkUpdateResponse> processLinkUpdate(LinkUpdateRequest linkUpdateRequest) {
+    public ResponseEntity<LinkUpdateResponse> processLinkUpdate(@RequestBody LinkUpdateRequest linkUpdateRequest) {
         // TODO: Process link update
 
         return ResponseEntity.ok(new LinkUpdateResponse("Update processed"));
