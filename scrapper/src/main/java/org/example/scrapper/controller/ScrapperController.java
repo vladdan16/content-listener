@@ -38,7 +38,7 @@ public class ScrapperController {
     @PostMapping("/links")
     public ResponseEntity<LinkResponse> addLink(int id, @RequestBody AddLinkRequest request) {
         // TODO: implement add link
-        LinkResponse link = new LinkResponse(id, "Ссылка успешно добавлена");
+        LinkResponse link = new LinkResponse(id, "Link added successfully");
         return ResponseEntity.ok(link);
     }
 
