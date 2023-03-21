@@ -17,32 +17,32 @@ import java.util.List;
 public class ScrapperController {
 
     @PostMapping("/tg-chat/{id}")
-    public ResponseEntity<Void> registerChat(@PathVariable int id) {
+    public ResponseEntity<Void> registerChat(@PathVariable Long id) {
         // TODO: register chat
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/tg-chat/{id}")
-    public ResponseEntity<Void> deleteChat(@PathVariable int id) {
+    public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
         // TODO: delete chat
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/links")
-    public ResponseEntity<ListLinksResponse> getLinks(int id) {
+    public ResponseEntity<ListLinksResponse> getLinks(Long id) {
         // TODO: get links
         ListLinksResponse links = new ListLinksResponse(null ,0);
         return ResponseEntity.ok(links);
     }
 
     @PostMapping("/links")
-    public ResponseEntity<LinkResponse> addLink(int id, @RequestBody AddLinkRequest request) {
+    public ResponseEntity<LinkResponse> addLink(Long id, @RequestBody AddLinkRequest request) {
         // TODO: implement add link
         LinkResponse link = new LinkResponse(id, "Link added successfully");
         return ResponseEntity.ok(link);
     }
 
-    public ResponseEntity<Void> removeLink(int id, @RequestBody RemoveLinkRequest request) {
+    public ResponseEntity<Void> removeLink(Long id, @RequestBody RemoveLinkRequest request) {
         // TODO: implement removing links
         return ResponseEntity.ok().build();
     }
