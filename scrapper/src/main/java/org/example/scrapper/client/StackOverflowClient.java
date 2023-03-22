@@ -13,7 +13,7 @@ public class StackOverflowClient {
 
     public StackOverflowResponse fetchQuestion(Long questionId) {
         return webClient.get()
-                .uri("/questions/{id}", questionId)
+                .uri("/questions/{id}?site=stackoverflow", questionId)
                 .retrieve()
                 .bodyToMono(StackOverflowResponse.class)
                 .block();
