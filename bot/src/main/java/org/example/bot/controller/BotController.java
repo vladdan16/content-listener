@@ -17,10 +17,10 @@ import java.util.List;
 public class BotController {
 
     @PostMapping
-    public ResponseEntity<LinkUpdateResponse> processLinkUpdate(@RequestBody LinkUpdateRequest linkUpdateRequest) {
+    public void processLinkUpdate(@RequestBody LinkUpdateRequest linkUpdateRequest) {
         // TODO: Process link update
 
-        return ResponseEntity.ok(new LinkUpdateResponse("Update processed"));
+        //return ResponseEntity.ok(new LinkUpdateResponse("Update processed"));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
