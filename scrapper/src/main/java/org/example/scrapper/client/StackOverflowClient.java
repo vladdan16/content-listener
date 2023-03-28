@@ -1,15 +1,13 @@
 package org.example.scrapper.client;
 
+import lombok.RequiredArgsConstructor;
 import org.example.scrapper.dto.StackOverflowResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
+@RequiredArgsConstructor
 public class StackOverflowClient {
 
     private final WebClient webClient;
-
-    public StackOverflowClient(WebClient webClient) {
-        this.webClient = webClient;
-    }
 
     public StackOverflowResponse fetchQuestion(Long questionId) {
         return webClient.get()
