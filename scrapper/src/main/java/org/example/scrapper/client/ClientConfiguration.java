@@ -29,6 +29,7 @@ public class ClientConfiguration {
                 .build();
     }
 
+    @Bean
     public StackOverflowClient stackOverflowClient(WebClient stackOverflowWebClient) {
         return new StackOverflowClient(stackOverflowWebClient);
     }

@@ -9,20 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
 @RequestMapping("/tg-scrapper")
-public class ScrapperController {
-
-    @PostMapping("/tg-chat/{id}")
-    public ResponseEntity<Void> registerChat(@PathVariable Long id) {
-        // TODO: register chat
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/tg-chat/{id}")
-    public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
-        // TODO: delete chat
-        return ResponseEntity.ok().build();
-    }
-
+public class ScrapperLinkController {
     @GetMapping("/links")
     public ResponseEntity<ListLinksResponse> getLinks(Long id) {
         // TODO: get links
