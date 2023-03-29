@@ -16,19 +16,11 @@ public class ClientConfiguration {
                 .build();
     }
 
-    public GithubClient githubClient() {
-        return new GithubClient(githubWebClient());
-    }
-
     @Bean
     public WebClient stackOverflowWebClient() {
         return WebClient.builder()
                 .baseUrl("https://api.stackexchange.com")
                 .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .build();
-    }
-
-    public StackOverflowClient stackOverflowClient() {
-        return new StackOverflowClient(stackOverflowWebClient());
     }
 }
