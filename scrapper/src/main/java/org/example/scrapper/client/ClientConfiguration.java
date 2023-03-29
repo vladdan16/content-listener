@@ -16,9 +16,8 @@ public class ClientConfiguration {
                 .build();
     }
 
-    @Bean
-    public GithubClient githubClient(WebClient githubWebClient) {
-        return new GithubClient(githubWebClient);
+    public GithubClient githubClient() {
+        return new GithubClient(githubWebClient());
     }
 
     @Bean
@@ -29,8 +28,7 @@ public class ClientConfiguration {
                 .build();
     }
 
-    @Bean
-    public StackOverflowClient stackOverflowClient(WebClient stackOverflowWebClient) {
-        return new StackOverflowClient(stackOverflowWebClient);
+    public StackOverflowClient stackOverflowClient() {
+        return new StackOverflowClient(stackOverflowWebClient());
     }
 }
