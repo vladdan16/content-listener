@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableScheduling
 public class LinkUpdaterScheduler {
-    @Scheduled(fixedDelayString = "#{app.scheduler.interval}")
+
+    @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
         System.out.println("Updating links...");
         // TODO: implement update logic
