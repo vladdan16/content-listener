@@ -1,15 +1,12 @@
 package org.example.bot.controller;
 
 import org.example.bot.dto.LinkUpdateRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/updates")
+@RestController
 public class BotController {
 
-    @PostMapping
+    @PostMapping("/updates")
     public void processLinkUpdate(@RequestBody LinkUpdateRequest linkUpdateRequest) {
         // TODO: Process link update
 

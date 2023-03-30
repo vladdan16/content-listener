@@ -1,9 +1,12 @@
 package org.example.scrapper.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/tg-scrapper")
+@RestController
 public class ScrapperChatController {
 
     @PostMapping("/tg-chat/{id}")

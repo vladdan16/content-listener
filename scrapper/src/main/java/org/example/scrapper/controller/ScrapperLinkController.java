@@ -7,25 +7,26 @@ import org.example.scrapper.dto.RemoveLinkRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/tg-scrapper")
+@RestController
 public class ScrapperLinkController {
-    @GetMapping("/links")
+    @GetMapping(value = "/links", produces = {"application/json"})
     public ResponseEntity<ListLinksResponse> getLinks(Long id) {
         // TODO: get links
         ListLinksResponse links = new ListLinksResponse(null ,0);
         return ResponseEntity.ok(links);
     }
 
-    @PostMapping("/links")
+    @PostMapping(value = "/links", produces = {"application/json"})
     public ResponseEntity<LinkResponse> addLink(Long id, @RequestBody AddLinkRequest request) {
         // TODO: implement add link
-        LinkResponse link = new LinkResponse(id, "Link added successfully");
+        LinkResponse link = new LinkResponse(id, "Link successfully added");
         return ResponseEntity.ok(link);
     }
 
-    @DeleteMapping("/links")
-    public ResponseEntity<Void> removeLink(Long id, @RequestBody RemoveLinkRequest request) {
+    @DeleteMapping(value = "/links", produces = {"apllication/json"})
+    public ResponseEntity<LinkResponse> removeLink(Long id, @RequestBody RemoveLinkRequest request) {
         // TODO: implement removing links
-        return ResponseEntity.ok().build();
+        LinkResponse link = new LinkResponse(id, "Link successfully removed");
+        return ResponseEntity.ok(link);
     }
 }
