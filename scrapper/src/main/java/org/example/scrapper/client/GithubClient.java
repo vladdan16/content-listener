@@ -1,21 +1,18 @@
 package org.example.scrapper.client;
 
+import lombok.RequiredArgsConstructor;
 import org.example.scrapper.dto.GithubResponse;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
+@RequiredArgsConstructor
 public class GithubClient {
 
-    private final WebClient webClient;
-
-    public GithubClient(@Qualifier("githubWebClient") WebClient webClient) {
-        this.webClient = webClient;
-    }
+    private final WebClient githubWebClient;
 
     public GithubResponse fetchRepository(String owner, String repo) {
-        return webClient.get()
+        return githubWebClient.get()
                 .uri("/repos/{owner}/{repo}", owner, repo)
                 .retrieve()
                 .bodyToMono(GithubResponse.class)
