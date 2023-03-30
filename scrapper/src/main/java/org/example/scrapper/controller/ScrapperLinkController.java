@@ -7,7 +7,6 @@ import org.example.scrapper.dto.RemoveLinkRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestControllerAdvice
 @RequestMapping("/tg-scrapper")
 public class ScrapperLinkController {
     @GetMapping("/links")
