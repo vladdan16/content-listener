@@ -8,22 +8,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/links")
 public class ScrapperLinkController {
-    @GetMapping(value = "/links", produces = {"application/json"})
+    @GetMapping(produces = {"application/json"})
     public ResponseEntity<ListLinksResponse> getLinks(Long id) {
         // TODO: get links
         ListLinksResponse links = new ListLinksResponse(null ,0);
         return ResponseEntity.ok(links);
     }
 
-    @PostMapping(value = "/links", produces = {"application/json"})
+    @PostMapping( produces = {"application/json"})
     public ResponseEntity<LinkResponse> addLink(Long id, @RequestBody AddLinkRequest request) {
         // TODO: implement add link
         LinkResponse link = new LinkResponse(id, "Link successfully added");
         return ResponseEntity.ok(link);
     }
 
-    @DeleteMapping(value = "/links", produces = {"apllication/json"})
+    @DeleteMapping(produces = {"apllication/json"})
     public ResponseEntity<LinkResponse> removeLink(Long id, @RequestBody RemoveLinkRequest request) {
         // TODO: implement removing links
         LinkResponse link = new LinkResponse(id, "Link successfully removed");
