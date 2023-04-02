@@ -1,9 +1,9 @@
 package org.example.scrapper.controller;
 
-import org.example.scrapper.dto.AddLinkRequest;
-import org.example.scrapper.dto.LinkResponse;
-import org.example.scrapper.dto.ListLinksResponse;
-import org.example.scrapper.dto.RemoveLinkRequest;
+import org.example.scrapper.dto.requests.AddLinkRequest;
+import org.example.scrapper.dto.responses.LinkResponse;
+import org.example.scrapper.dto.responses.ListLinksResponse;
+import org.example.scrapper.dto.requests.RemoveLinkRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
 package org.example.scrapper.controller;
 
-import org.example.scrapper.dto.ApiErrorResponse;
+import org.example.scrapper.dto.responses.ApiErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package org.example.scrapper.client;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.dto.GithubResponse;
+import org.example.scrapper.dto.responses.GithubResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
