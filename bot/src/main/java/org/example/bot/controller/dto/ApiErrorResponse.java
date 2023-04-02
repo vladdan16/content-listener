@@ -1,4 +1,4 @@
-package org.example.bot.dto;
+package org.example.bot.controller.dto;
 
 import java.util.List;
 

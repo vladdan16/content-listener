@@ -1,6 +1,6 @@
 package org.example.bot.controller;
 
-import org.example.bot.dto.ApiErrorResponse;
+import org.example.bot.controller.dto.ApiErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
