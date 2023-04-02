@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/links")
 public class ScrapperLinkController {
-    @GetMapping(produces = {"application/json"})
+    @GetMapping()
     public ResponseEntity<ListLinksResponse> getLinks(Long id) {
         // TODO: get links
         // Temporary solution
@@ -27,21 +27,21 @@ public class ScrapperLinkController {
         return ResponseEntity.ok(links);
     }
 
-    @PostMapping( produces = {"application/json"})
+    @PostMapping()
     public ResponseEntity<LinkResponse> addLink(Long id, @RequestBody AddLinkRequest request) {
         // TODO: implement add link
         // Temporary solution
         Database.getInstance().addLinkToUser(id, request.url());
-        LinkResponse link = new LinkResponse(id, "Link successfully added");
+        LinkResponse link = new LinkResponse(id, request.url());
         return ResponseEntity.ok(link);
     }
 
-    @DeleteMapping(produces = {"appllication/json"})
+    @DeleteMapping()
     public ResponseEntity<LinkResponse> removeLink(Long id, @RequestBody RemoveLinkRequest request) {
         // TODO: implement removing links
         // Temporary solution
         Database.getInstance().removeLinkFromUser(id, request.url());
-        LinkResponse link = new LinkResponse(id, "Link successfully removed");
+        LinkResponse link = new LinkResponse(id, request.url());
         return ResponseEntity.ok(link);
     }
 }

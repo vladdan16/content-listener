@@ -39,6 +39,10 @@ public class Database {
     }
 
     public boolean addLinkToUser(long id, String link) {
+        if (!users.containsKey(id)) {
+            System.out.println("User not found, creating...");
+            users.put(id, new User(id));
+        }
         return users.get(id).addLink(link);
     }
 
