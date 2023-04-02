@@ -7,9 +7,9 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
+import org.example.bot.client.ScrapperClient;
 import org.example.bot.configuration.ApplicationConfig;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +25,10 @@ public class MyBot implements AutoCloseable, UpdatesListener {
      * Public constructor of bot
      * @param config Application config
      */
-    public MyBot(ApplicationConfig config) {
+    public MyBot(ConfigurableApplicationContext ctx, ApplicationConfig config) {
         this.telegramBot = new TelegramBot(config.token());
-        ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-        this.userMessageProcessor = context.getBean(UserMessageProcessor.class);
+        ScrapperClient client = ctx.getBean(ScrapperClient.class);
+        this.userMessageProcessor = new UserMessageProcessor(client);
     }
 
     /**
@@ -41,6 +41,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
 
     @Override
     public int process(List<Update> list) {
+        //return UpdatesListener.CONFIRMED_UPDATES_NONE;
         list.forEach(update -> {
             SendMessage message = userMessageProcessor.process(update);
             if (message != null) {

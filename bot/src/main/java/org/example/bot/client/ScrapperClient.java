@@ -49,7 +49,7 @@ public class ScrapperClient {
     public ListLinksResponse getLinks(long id) {
         return scrapperWebClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .pathSegment("/links")
+                        .pathSegment("links")
                         .queryParam("id", id)
                         .build())
                 .retrieve()
@@ -60,7 +60,7 @@ public class ScrapperClient {
     public LinkResponse addLink(long id, AddLinkRequest request) {
         return scrapperWebClient.post()
                 .uri(uriBuilder -> uriBuilder
-                        .pathSegment("/links")
+                        .pathSegment("links")
                         .queryParam("id", id)
                         .build())
                 .body(BodyInserters.fromValue(request))
@@ -72,7 +72,7 @@ public class ScrapperClient {
     public LinkResponse removeLink(long id, RemoveLinkRequest request) {
         return scrapperWebClient.method(HttpMethod.DELETE)
                 .uri(uriBuilder -> uriBuilder
-                        .pathSegment("/links")
+                        .pathSegment("links")
                         .queryParam("id", id)
                         .build())
                 .body(BodyInserters.fromValue(request))
