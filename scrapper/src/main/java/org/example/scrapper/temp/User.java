@@ -5,16 +5,19 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Temporary record until we connect database
- * @param id Long user id
+ * Temporary class until we connect database
  */
-public record User(long id) {
-    private static Set<String> links;
+public class User {
+
+    private final long id;
+    private final Set<String> links;
+
+    public User(long id) {
+        this.id = id;
+        links = new HashSet<>();
+    }
 
     public boolean addLink(String link) {
-        if (links == null) {
-            links = new HashSet<>();
-        }
         if (links.contains(link)) {
             return false;
         }
@@ -23,9 +26,6 @@ public record User(long id) {
     }
 
     public boolean removeLink(String link) {
-        if (links == null) {
-            return false;
-        }
         if (!links.contains(link)) {
             return false;
         }
@@ -35,5 +35,9 @@ public record User(long id) {
 
     public List<String> getLinks() {
         return links.stream().toList();
+    }
+
+    public long getId() {
+        return id;
     }
 }
