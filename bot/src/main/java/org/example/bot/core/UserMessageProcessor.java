@@ -2,7 +2,13 @@ package org.example.bot.core;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.example.bot.client.ScrapperClient;
+import org.example.bot.client.dto.AddLinkRequest;
+import org.example.bot.client.dto.LinkResponse;
+import org.example.bot.client.dto.ListLinksResponse;
+import org.example.bot.client.dto.RemoveLinkRequest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,6 +16,12 @@ import java.util.List;
  * Class to process messages from telegram bot
  */
 public class UserMessageProcessor {
+
+    private final ScrapperClient scrapperClient;
+
+    public UserMessageProcessor(ScrapperClient scrapperClient) {
+        this.scrapperClient = scrapperClient;
+    }
 
     /**
      * List of all possible commands
@@ -38,11 +50,6 @@ public class UserMessageProcessor {
 
         String command = update.message().text().split(" ")[0];
 
-        // We need this block as long as we don't have database. It will be removed later
-        if (!Database.getInstance().userExists(chatId) && !command.equals("/start")) {
-            return new SendMessage(chatId, "Please, press /start command to continue");
-        }
-
         if (command.startsWith("/")) {
             for (Command c : commands()) {
                 if (c.supports(update)) {
@@ -56,7 +63,7 @@ public class UserMessageProcessor {
     /**
      * Class for /start command
      */
-    private static class StartCommand implements Command {
+    private class StartCommand implements Command {
         @Override
         public String command() {
             return "/start";
@@ -70,10 +77,7 @@ public class UserMessageProcessor {
         @Override
         public SendMessage handle(Update update) {
             long chatId = update.message().chat().id();
-            if (!Database.getInstance().registerUser(chatId)) {
-                System.out.println("Restart chat");
-                return new SendMessage(chatId, "Restart chat");
-            }
+            scrapperClient.registerChat(chatId);
             return new SendMessage(chatId, "Welcome! Type /help for a list of commands.");
         }
     }
@@ -109,7 +113,7 @@ public class UserMessageProcessor {
     /**
      * Class for /track command
      */
-    private static class TrackCommand implements Command {
+    private class TrackCommand implements Command {
 
         @Override
         public String command() {
@@ -126,8 +130,7 @@ public class UserMessageProcessor {
             long chatId = update.message().chat().id();
             String message = update.message().text();
             String link = message.substring(command().length()).trim();
-            // TODO: implement tracking
-            Database.getInstance().addLinkToUser(chatId, link);
+            scrapperClient.addLink(chatId, new AddLinkRequest(link));
             return new SendMessage(chatId, "Started tracking " + link);
         }
 
@@ -142,7 +145,7 @@ public class UserMessageProcessor {
     /**
      * Class for /untrack command
      */
-    private static class UntrackCommand implements Command {
+    private class UntrackCommand implements Command {
 
         @Override
         public String command() {
@@ -160,9 +163,7 @@ public class UserMessageProcessor {
             String message = update.message().text();
             String link = message.substring(command().length()).trim();
             // TODO: implement untracking
-            if (!Database.getInstance().removeLinkFromUser(chatId, link)) {
-                return new SendMessage(chatId, "Unable to remove non-existing link");
-            }
+            scrapperClient.removeLink(chatId, new RemoveLinkRequest(link));
             return new SendMessage(chatId, "Link was successfully removed");
         }
 
@@ -177,7 +178,7 @@ public class UserMessageProcessor {
     /**
      * Class for /list command
      */
-    private static class ListCommand implements Command {
+    private class ListCommand implements Command {
 
         @Override
         public String command() {
@@ -192,8 +193,12 @@ public class UserMessageProcessor {
         @Override
         public SendMessage handle(Update update) {
             long chatId = update.message().chat().id();
-            List<String> links = Database.getInstance().getAllLinksFromUser(chatId);
-            if (links == null || links.isEmpty()) {
+            ListLinksResponse response = scrapperClient.getLinks(chatId);
+            List<String> links = new ArrayList<>();
+            for (LinkResponse r : response.links()) {
+                links.add(r.url().toString());
+            }
+            if (links.isEmpty()) {
                 return new SendMessage(chatId, "There are no links to track");
             }
             StringBuilder builder = new StringBuilder();

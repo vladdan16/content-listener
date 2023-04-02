@@ -8,6 +8,8 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import org.example.bot.configuration.ApplicationConfig;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,8 @@ public class MyBot implements AutoCloseable, UpdatesListener {
      */
     public MyBot(ApplicationConfig config) {
         this.telegramBot = new TelegramBot(config.token());
-        this.userMessageProcessor = new UserMessageProcessor();
+        ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+        this.userMessageProcessor = context.getBean(UserMessageProcessor.class);
     }
 
     /**
