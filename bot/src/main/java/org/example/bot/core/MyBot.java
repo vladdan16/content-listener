@@ -8,10 +8,8 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import org.example.bot.client.ScrapperClient;
-import org.example.bot.configuration.ApplicationConfig;
 import org.example.bot.configuration.BotConfiguration;
 import org.example.bot.core.commands.Command;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -28,7 +26,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
 
     /**
      * Public constructor of bot
-     * @param config Application config
+     * @param ctx Context of app
      */
     public MyBot(ConfigurableApplicationContext ctx) {
         BotConfiguration config = ctx.getBean(BotConfiguration.class);
@@ -73,7 +71,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
      */
     private void setCommands() {
         ArrayList<BotCommand> botCommands = new ArrayList<>();
-        for (Command c : userMessageProcessor.commands()) {
+        for (Command c : UserMessageProcessor.commands()) {
             botCommands.add(c.toApiCommand());
         }
         SetMyCommands setMyCommands = new SetMyCommands(botCommands.toArray(new BotCommand[0]));
