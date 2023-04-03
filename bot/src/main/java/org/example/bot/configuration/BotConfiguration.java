@@ -5,5 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "app")
-public record ApplicationConfig(@NotNull String test) {}
+@ConfigurationProperties(prefix = "bot")
+public record BotConfiguration(@NotNull String token) {
+}
