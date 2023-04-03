@@ -9,6 +9,7 @@ import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.configuration.ApplicationConfig;
+import org.example.bot.core.commands.Command;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.ArrayList;

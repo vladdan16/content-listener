@@ -1,4 +1,4 @@
-package org.example.bot.core;
+package org.example.bot.core.commands;
 
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
