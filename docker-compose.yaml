@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+
+  postgres:
+    image: 'postgres:13.1-alpine'
+    container_name: postgres
+    ports:
+      - 5433:5432
+
+    environment:
+      - POSTGRES_USER=content-listener
+      - POSTGRES_PASSWORD=admin
+    restart: always

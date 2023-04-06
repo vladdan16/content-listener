@@ -24,6 +24,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
 
     /**
      * Public constructor of bot
+     *
      * @param config Application config
      */
     public MyBot(ConfigurableApplicationContext ctx, ApplicationConfig config) {
@@ -48,7 +49,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
             if (message != null) {
                 BaseResponse response = telegramBot.execute(message);
                 if (!response.isOk()) {
-                    System.out.println("Error while sending message: "+  response.description());
+                    System.out.println("Error while sending message: " + response.description());
                 }
             }
         });
