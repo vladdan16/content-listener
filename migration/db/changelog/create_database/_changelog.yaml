@@ -1,7 +1,7 @@
-databaseChangelog:
+databaseChangeLog:
   - changeSet:
       id: CREATE_DATABASE
-
+      author: Vladislav Danshov
       changes:
         - tagDatabase:
             tag: CREATE_DATABASE

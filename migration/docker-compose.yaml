@@ -11,6 +11,7 @@ services:
     environment:
       - POSTGRES_USER=content-listener
       - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=postgres
     restart: always
     networks:
       - backend
