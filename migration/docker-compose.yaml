@@ -22,9 +22,9 @@ services:
       - postgres
     command:
       - --hub-mode=off
-      - --changelog-file=db/changelog/db-changelog-master.yaml
+      - --changelog-file=master.yaml
       - --driver=org.postgresql.Driver
-      - --url=jdbc:postgresql://localhost:5432/scrapper
+      - --url=jdbc:postgresql://172.23.0.2:5432/scrapper
       - --username=content-listener
       - --password=admin
       - update

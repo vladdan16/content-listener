@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
-      file: create_database/_changelog.yaml
+      file: changelog/create_database/_changelog.yaml
       relativeToChangelogFile: true
