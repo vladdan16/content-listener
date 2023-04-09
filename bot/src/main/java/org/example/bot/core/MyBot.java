@@ -68,7 +68,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
      */
     private void setCommands() {
         ArrayList<BotCommand> botCommands = new ArrayList<>();
-        for (Command c : userMessageProcessor.commands()) {
+        for (Command c : UserMessageProcessor.commands()) {
             botCommands.add(c.toApiCommand());
         }
         SetMyCommands setMyCommands = new SetMyCommands(botCommands.toArray(new BotCommand[0]));
