@@ -1,7 +1,6 @@
 package org.example.bot;
 
 import org.example.bot.configuration.ApplicationConfig;
-import org.example.bot.core.MyBot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

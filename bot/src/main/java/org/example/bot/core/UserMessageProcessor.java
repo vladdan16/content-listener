@@ -2,12 +2,10 @@ package org.example.bot.core;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.example.bot.client.ScrapperClient;
-import org.example.bot.core.commands.*;
+import org.example.bot.core.commands.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
