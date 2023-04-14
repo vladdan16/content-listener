@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.client.dto.LinkResponse;
 import org.example.bot.client.dto.ListLinksResponse;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * Class for /list command
  */
+@Component
 @RequiredArgsConstructor
 public class ListCommand implements Command {
     private final ScrapperClient scrapperClient;
