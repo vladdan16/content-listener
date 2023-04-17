@@ -6,6 +6,7 @@ import org.example.scrapper.domain.dto.ChatDto;
 import org.example.scrapper.domain.mapper.ChatRowMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,7 @@ public class JdbcChatDao implements ChatDao {
 
     @Override
     public List<ChatDto> findAll() {
-        String sql = "SELECT * FROM chat";
+        String sql = "SELECT id FROM chat";
         return jdbcTemplate.query(sql, chatRowMapper);
     }
 }

@@ -1,13 +1,10 @@
 package org.example.scrapper;
 
-import liquibase.Contexts;
 import liquibase.Liquibase;
-import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.utility.MountableFile;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -32,23 +29,23 @@ public class IntegrationEnvironment {
         username = container.getUsername();
         password = container.getPassword();
 
-        try {
-            Path path = new File("/home/vladdan/Documents/GitHub/content-listener/migration/migrations/master.yaml")
-                    .toPath();
-            Liquibase liquibase = new Liquibase(path.toString(),
-                    new ClassLoaderResourceAccessor(),
-                    new JdbcConnection(
-                            DriverManager.getConnection(
-                                    container.getJdbcUrl(),
-                                    container.getUsername(),
-                                    container.getPassword()
-                            )
-                    )
-            );
-            liquibase.update("");
-        } catch (LiquibaseException | SQLException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Path path = new File("/home/vladdan/Documents/GitHub/content-listener/migration/migrations/master.yaml")
+//                    .toPath();
+//            Liquibase liquibase = new Liquibase(path.toString(),
+//                    new ClassLoaderResourceAccessor(),
+//                    new JdbcConnection(
+//                            DriverManager.getConnection(
+//                                    container.getJdbcUrl(),
+//                                    container.getUsername(),
+//                                    container.getPassword()
+//                            )
+//                    )
+//            );
+//            liquibase.update("");
+//        } catch (LiquibaseException | SQLException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public static IntegrationEnvironment getInstance() {
