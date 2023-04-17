@@ -10,8 +10,5 @@ databaseChangeLog:
       file: create_chat_table.sql
       relativeToChangelogFile: true
   - include:
-      file: create_link_type_table.sql
-      relativeToChangelogFile: true
-  - include:
       file: create_link_table.sql
       relativeToChangelogFile: true
