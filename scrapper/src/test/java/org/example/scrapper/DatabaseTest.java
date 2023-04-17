@@ -104,7 +104,7 @@ public class DatabaseTest {
                 assertEquals(1, resultSet.getInt(1));
             }
 
-            try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM link WHERE link = 'github.com' AND link_type_id = 1 AND owner_id = 1")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM link WHERE link = 'github.com' AND owner_id = 1")) {
                 ResultSet resultSet = statement.executeQuery();
 
                 resultSet.next();
@@ -127,14 +127,8 @@ public class DatabaseTest {
                 statement.executeUpdate();
             }
 
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link_type (type) VALUES (?)")) {
-                statement.setString(1, "test");
-                statement.executeUpdate();
-            }
-
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link (link, link_type_id, owner_id) VALUES (?, ?, ?)")) {
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link (link, owner_id) VALUES (?, ?)")) {
                 statement.setString(1, "github.com");
-                statement.setInt(2, 1);
                 statement.setLong(3, 1);
                 statement.executeUpdate();
             }
