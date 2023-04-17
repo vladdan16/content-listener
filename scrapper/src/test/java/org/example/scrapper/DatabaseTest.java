@@ -4,15 +4,12 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -28,54 +25,47 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Testcontainers
-public class DatabaseTest {
-    @ClassRule
-    public static PostgreSQLContainer<MyPostgresContainer> postgreSQLContainer = MyPostgresContainer.getInstance();
+public class DatabaseTest extends IntegrationEnvironment {
 
-    @BeforeAll
-    static void performMigrations() {
-        postgreSQLContainer.setWaitStrategy(
-                new LogMessageWaitStrategy()
-                        .withRegEx(".*database system is ready to accept connections.*\\s")
-                        .withTimes(1)
-                        .withStartupTimeout(Duration.of(60, ChronoUnit.SECONDS))
-        );
-        postgreSQLContainer.start();
-        Path migrationDir = new File("../../../../../migration/migrations").toPath();
-        try {
-            Liquibase liquibase = new Liquibase(migrationDir
-                    .resolve("master.yaml")
-                    .toString(),
-                    new ClassLoaderResourceAccessor(),
-                    new JdbcConnection(
-                            DriverManager.getConnection(
-                                    postgreSQLContainer.getJdbcUrl(),
-                                    postgreSQLContainer.getUsername(),
-                                    postgreSQLContainer.getPassword()
-                            )
-                    )
-            );
-            liquibase.update("");
-        } catch (LiquibaseException | SQLException e) {
-            throw new RuntimeException(e);
-        }
-        setUpTestData();
-    }
-
-    @AfterAll
-    static void stopContainer() {
-        postgreSQLContainer.stop();
-    }
+//    @BeforeAll
+//    static void performMigrations() {
+//        var container = getContainer();
+//        container.setWaitStrategy(
+//                new LogMessageWaitStrategy()
+//                        .withRegEx(".*database system is ready to accept connections.*\\s")
+//                        .withTimes(1)
+//                        .withStartupTimeout(Duration.of(60, ChronoUnit.SECONDS))
+//        );
+//        container.start();
+//        Path migrationDir = new File("../../../../../migration/migrations").toPath();
+//        try {
+//            Liquibase liquibase = new Liquibase("../../../../../migration/migrations/master.yaml",
+//                    new ClassLoaderResourceAccessor(),
+//                    new JdbcConnection(
+//                            DriverManager.getConnection(
+//                                    container.getJdbcUrl(),
+//                                    container.getUsername(),
+//                                    container.getPassword()
+//                            )
+//                    )
+//            );
+//            liquibase.update("");
+//        } catch (LiquibaseException | SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        setUpTestData();
+//    }
 
     @Test
     @Order(1)
     public void testDBConnection() {
+        var container = getContainer();
         try (Connection connection = DriverManager.getConnection(
-                postgreSQLContainer.getJdbcUrl(),
-                postgreSQLContainer.getUsername(),
-                postgreSQLContainer.getPassword()
+                container.getJdbcUrl(),
+                container.getUsername(),
+                container.getPassword()
         )) {
-            System.out.println(postgreSQLContainer.getJdbcUrl());
+            System.out.println(container.getJdbcUrl());
             assertTrue(connection.isValid(5));
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -85,10 +75,11 @@ public class DatabaseTest {
     @Test
     @Order(2)
     public void testDBData() {
+        var container = getContainer();
         try (Connection connection = DriverManager.getConnection(
-                postgreSQLContainer.getJdbcUrl(),
-                postgreSQLContainer.getUsername(),
-                postgreSQLContainer.getPassword()
+                container.getJdbcUrl(),
+                container.getUsername(),
+                container.getPassword()
         )) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM chat WHERE id = 1")) {
                 ResultSet resultSet = statement.executeQuery();
@@ -117,10 +108,11 @@ public class DatabaseTest {
     }
 
     private static void setUpTestData() {
+        var container = getContainer();
         try (Connection connection = DriverManager.getConnection(
-                postgreSQLContainer.getJdbcUrl(),
-                postgreSQLContainer.getUsername(),
-                postgreSQLContainer.getPassword()
+                container.getJdbcUrl(),
+                container.getUsername(),
+                container.getPassword()
         )) {
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO chat (id) VALUES (?)")) {
                 statement.setLong(1, 1);
