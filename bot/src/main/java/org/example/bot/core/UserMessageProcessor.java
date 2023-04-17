@@ -4,6 +4,8 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.core.commands.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,30 +13,28 @@ import java.util.List;
 /**
  * Class to process messages from telegram bot
  */
+@Component
 public class UserMessageProcessor {
 
-    private static ScrapperClient scrapperClient;
+    public static List<? extends Command> commandList;
 
-    public UserMessageProcessor(ScrapperClient scrapperClient) {
-        UserMessageProcessor.scrapperClient = scrapperClient;
+    @Autowired
+    public UserMessageProcessor(List<? extends Command> commandList) {
+        UserMessageProcessor.commandList = commandList;
     }
 
     /**
      * List of all possible commands
+     *
      * @return List<Command>
      */
     public static List<? extends Command> commands() {
-        return Arrays.asList(
-                new StartCommand(scrapperClient),
-                new HelpCommand(scrapperClient),
-                new TrackCommand(scrapperClient),
-                new UntrackCommand(scrapperClient),
-                new ListCommand(scrapperClient)
-        );
+        return commandList;
     }
 
     /**
      * Process update from telegram bot to reply to user
+     *
      * @param update Update from bot
      * @return SendMessage instance for our bot
      */

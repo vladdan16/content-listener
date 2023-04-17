@@ -7,10 +7,10 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
-import org.example.bot.client.ScrapperClient;
-import org.example.bot.configuration.ApplicationConfig;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.example.bot.core.commands.Command;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,24 +18,16 @@ import java.util.List;
 /**
  * Class-wrapper for bot
  */
+@Component
+@RequiredArgsConstructor
 public class MyBot implements AutoCloseable, UpdatesListener {
     private final TelegramBot telegramBot;
     private final UserMessageProcessor userMessageProcessor;
 
     /**
-     * Public constructor of bot
-     *
-     * @param config Application config
-     */
-    public MyBot(ConfigurableApplicationContext ctx, ApplicationConfig config) {
-        this.telegramBot = new TelegramBot(config.token());
-        ScrapperClient client = ctx.getBean(ScrapperClient.class);
-        this.userMessageProcessor = new UserMessageProcessor(client);
-    }
-
-    /**
      * void method to start our bot
      */
+    @PostConstruct
     public void start() {
         telegramBot.setUpdatesListener(this);
         setCommands();
@@ -69,7 +61,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
      */
     private void setCommands() {
         ArrayList<BotCommand> botCommands = new ArrayList<>();
-        for (Command c : userMessageProcessor.commands()) {
+        for (Command c : UserMessageProcessor.commands()) {
             botCommands.add(c.toApiCommand());
         }
         SetMyCommands setMyCommands = new SetMyCommands(botCommands.toArray(new BotCommand[0]));

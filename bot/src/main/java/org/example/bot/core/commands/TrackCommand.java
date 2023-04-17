@@ -5,10 +5,12 @@ import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.client.dto.AddLinkRequest;
+import org.springframework.stereotype.Component;
 
 /**
  * Class for /track command
  */
+@Component
 @RequiredArgsConstructor
 public class TrackCommand implements Command {
     private final ScrapperClient scrapperClient;

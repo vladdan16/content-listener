@@ -5,10 +5,12 @@ import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.client.dto.RemoveLinkRequest;
+import org.springframework.stereotype.Component;
 
 /**
  * Class for /untrack command
  */
+@Component
 @RequiredArgsConstructor
 public class UntrackCommand implements Command {
     private final ScrapperClient scrapperClient;

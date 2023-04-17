@@ -5,10 +5,12 @@ import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.core.UserMessageProcessor;
+import org.springframework.stereotype.Component;
 
 /**
  * Class for /help command
  */
+@Component
 @RequiredArgsConstructor
 public class HelpCommand implements Command {
     private final ScrapperClient scrapperClient;
