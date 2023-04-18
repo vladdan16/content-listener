@@ -1,6 +1,6 @@
 package org.example.bot.controller;
 
-import org.example.bot.dto.LinkUpdateRequest;
+import org.example.bot.controller.dto.LinkUpdateRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

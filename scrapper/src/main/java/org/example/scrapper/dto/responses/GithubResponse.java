@@ -1,4 +1,4 @@
-package org.example.scrapper.dto;
+package org.example.scrapper.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -10,7 +10,7 @@ public final class GithubUrlHandler extends UrlHandler {
     /**
      * Pattern for Github link
      */
-    private static final Pattern GITHUB_URL_PATTERN = Pattern.compile("^https://github\\.com/[^/]+/[^/]+/$");
+    private static final Pattern GITHUB_URL_PATTERN = Pattern.compile("^https://github\\.com/[^/]+/[^/]+/?$");
 
     public GithubUrlHandler(UrlHandler nextHandler) {
         super(nextHandler);

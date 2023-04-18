@@ -1,3 +1,4 @@
 *.iml
 .idea
 target
+/bot/src/main/resources/env.properties

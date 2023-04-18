@@ -1,4 +1,4 @@
-package org.example.scrapper.dto;
+package org.example.bot.controller.dto;
 
 import java.util.List;
 
