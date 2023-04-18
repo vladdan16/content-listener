@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class ClientConfiguration {
+
     @Value("${base-url}")
     private String baseUrl;
     @Bean
