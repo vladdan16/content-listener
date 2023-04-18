@@ -1,23 +1,13 @@
 package org.example.scrapper;
 
-import liquibase.Liquibase;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.sql.*;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,35 +16,6 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 @Testcontainers
 public class DatabaseTest extends IntegrationEnvironment {
-
-//    @BeforeAll
-//    static void performMigrations() {
-//        var container = getContainer();
-//        container.setWaitStrategy(
-//                new LogMessageWaitStrategy()
-//                        .withRegEx(".*database system is ready to accept connections.*\\s")
-//                        .withTimes(1)
-//                        .withStartupTimeout(Duration.of(60, ChronoUnit.SECONDS))
-//        );
-//        container.start();
-//        Path migrationDir = new File("../../../../../migration/migrations").toPath();
-//        try {
-//            Liquibase liquibase = new Liquibase("../../../../../migration/migrations/master.yaml",
-//                    new ClassLoaderResourceAccessor(),
-//                    new JdbcConnection(
-//                            DriverManager.getConnection(
-//                                    container.getJdbcUrl(),
-//                                    container.getUsername(),
-//                                    container.getPassword()
-//                            )
-//                    )
-//            );
-//            liquibase.update("");
-//        } catch (LiquibaseException | SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        setUpTestData();
-//    }
 
     @Test
     @Order(1)
