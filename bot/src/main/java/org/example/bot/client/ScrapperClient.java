@@ -5,9 +5,7 @@ import org.example.bot.client.dto.AddLinkRequest;
 import org.example.bot.client.dto.LinkResponse;
 import org.example.bot.client.dto.ListLinksResponse;
 import org.example.bot.client.dto.RemoveLinkRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,20 +14,9 @@ import org.springframework.web.reactive.function.client.WebClient;
  * Scrapper client for bot module
  */
 @Component
+@RequiredArgsConstructor
 public class ScrapperClient {
     private final WebClient scrapperWebClient;
-
-    @Autowired
-    public ScrapperClient(WebClient scrapperWebClient) {
-        this.scrapperWebClient = scrapperWebClient;
-    }
-
-    public ScrapperClient(String baseUrl) {
-        scrapperWebClient = WebClient.builder()
-                .baseUrl(baseUrl)
-                .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .build();
-    }
 
     public void registerChat(long id) {
         scrapperWebClient.post()
