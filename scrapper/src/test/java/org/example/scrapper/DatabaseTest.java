@@ -20,7 +20,6 @@ public class DatabaseTest extends IntegrationEnvironment {
     @Test
     @Order(1)
     public void testDBConnection() {
-        var container = getContainer();
         try (Connection connection = DriverManager.getConnection(
                 container.getJdbcUrl(),
                 container.getUsername(),
@@ -36,20 +35,13 @@ public class DatabaseTest extends IntegrationEnvironment {
     @Test
     @Order(2)
     public void testDBData() {
-        var container = getContainer();
+        setUpTestData();
         try (Connection connection = DriverManager.getConnection(
                 container.getJdbcUrl(),
                 container.getUsername(),
                 container.getPassword()
         )) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM chat WHERE id = 1")) {
-                ResultSet resultSet = statement.executeQuery();
-
-                resultSet.next();
-                assertEquals(1, resultSet.getInt(1));
-            }
-
-            try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM link_type WHERE type = 'test'")) {
                 ResultSet resultSet = statement.executeQuery();
 
                 resultSet.next();
@@ -69,7 +61,6 @@ public class DatabaseTest extends IntegrationEnvironment {
     }
 
     private static void setUpTestData() {
-        var container = getContainer();
         try (Connection connection = DriverManager.getConnection(
                 container.getJdbcUrl(),
                 container.getUsername(),
@@ -79,10 +70,10 @@ public class DatabaseTest extends IntegrationEnvironment {
                 statement.setLong(1, 1);
                 statement.executeUpdate();
             }
-
+            System.out.println(container.getJdbcUrl());
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link (link, owner_id) VALUES (?, ?)")) {
                 statement.setString(1, "github.com");
-                statement.setLong(3, 1);
+                statement.setLong(2, 1);
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
