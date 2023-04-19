@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ClientConfiguration {
     @Value("${base-url}")
     private String baseUrl;
+
     @Bean
     public WebClient scrapperWebClient() {
         return WebClient.builder()

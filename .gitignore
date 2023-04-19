@@ -1,5 +1,4 @@
 *.iml
 .idea
 target
-/env.properties
 /bot/src/main/resources/env.properties
