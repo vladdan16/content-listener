@@ -1,8 +1,8 @@
 package org.example.scrapper.domain;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.domain.Dao.LinkDao;
 import org.example.scrapper.domain.dto.LinkDto;
+import org.example.scrapper.domain.interfaces.LinkDao;
 import org.example.scrapper.domain.mapper.LinkRowMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.JdbcTemplate;

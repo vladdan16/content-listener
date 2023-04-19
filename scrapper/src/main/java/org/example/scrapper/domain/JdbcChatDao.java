@@ -1,12 +1,11 @@
 package org.example.scrapper.domain;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.domain.Dao.ChatDao;
 import org.example.scrapper.domain.dto.ChatDto;
+import org.example.scrapper.domain.interfaces.ChatDao;
 import org.example.scrapper.domain.mapper.ChatRowMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

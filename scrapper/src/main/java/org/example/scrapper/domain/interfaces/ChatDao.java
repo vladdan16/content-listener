@@ -1,4 +1,4 @@
-package org.example.scrapper.domain.Dao;
+package org.example.scrapper.domain.interfaces;
 
 import org.example.scrapper.domain.dto.ChatDto;
 
