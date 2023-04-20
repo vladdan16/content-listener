@@ -1,32 +1,20 @@
 package org.example.scrapper;
 
 import org.junit.Test;
-import org.junit.jupiter.api.Order;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @SpringBootTest
 public class DatabaseTest extends IntegrationEnvironment {
     private static final int TIMEOUT = 5;
 
     @Test
-    @Order(1)
-    public void testDBConnection() {
-        System.out.println(container.getJdbcUrl());
-        try {
-            assertTrue(connection.isValid(TIMEOUT));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Test
-    @Order(2)
     public void testDBData() {
         setUpTestData();
 
@@ -39,7 +27,7 @@ public class DatabaseTest extends IntegrationEnvironment {
             throw new RuntimeException(e);
         }
 
-        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM link WHERE link = 'github.com' AND owner_id = 1")) {
+        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM link WHERE link = 'github.com'")) {
             ResultSet resultSet = statement.executeQuery();
 
             resultSet.next();
@@ -47,20 +35,30 @@ public class DatabaseTest extends IntegrationEnvironment {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 
     private static void setUpTestData() {
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO chat (id) VALUES (?)")) {
-            statement.setLong(1, 1);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO chat (id, time_created) VALUES (?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setTimestamp(2, timestamp);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link (link, owner_id) VALUES (?, ?)")) {
-            statement.setString(1, "github.com");
-            statement.setLong(2, 1);
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link (id, link, time_created, time_checked) VALUES (?, ?, ?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setString(2, "github.com");
+            statement.setTimestamp(3, timestamp);
+            statement.setTimestamp(4, timestamp);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO chat_link (chat_id, link_id) VALUES (?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setLong(2, 1L);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
