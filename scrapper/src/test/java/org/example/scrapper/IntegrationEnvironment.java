@@ -10,12 +10,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Testcontainers
 public class IntegrationEnvironment {
-    public static PostgreSQLContainer<?> container;
+    public static final PostgreSQLContainer<?> container;
+    public static final Connection connection;
 
     static {
         container = new PostgreSQLContainer<>("postgres:15.2-alpine")
@@ -24,6 +26,16 @@ public class IntegrationEnvironment {
                 .withPassword("test");
         container.start();
         performMigrations();
+
+        try {
+            connection = DriverManager.getConnection(
+                    container.getJdbcUrl(),
+                    container.getUsername(),
+                    container.getPassword()
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void performMigrations() {
