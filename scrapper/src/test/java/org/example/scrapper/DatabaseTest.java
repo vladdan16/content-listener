@@ -12,19 +12,6 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 public class DatabaseTest extends IntegrationEnvironment {
     private static final int TIMEOUT = 5;
-    private static final Connection connection;
-
-    static {
-        try {
-            connection = DriverManager.getConnection(
-                    container.getJdbcUrl(),
-                    container.getUsername(),
-                    container.getPassword()
-            );
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Test
     @Order(1)
