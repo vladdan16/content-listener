@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 public class DatabaseTest extends IntegrationEnvironment {
-    private static final int TIMEOUT = 5;
 
     @Test
     public void testDBData() {
