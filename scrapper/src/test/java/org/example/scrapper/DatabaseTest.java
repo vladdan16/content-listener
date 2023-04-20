@@ -2,12 +2,11 @@ package org.example.scrapper;
 
 import org.junit.Test;
 import org.junit.jupiter.api.Order;
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
