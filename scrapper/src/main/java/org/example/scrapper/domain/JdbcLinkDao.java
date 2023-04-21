@@ -89,6 +89,16 @@ public class JdbcLinkDao implements LinkDao {
         return jdbcTemplate.query(sql, chatRowMapper, link);
     }
 
+    @Override
+    public List<LinkDto> findAllOldLinks() {
+        String sql = """
+                SELECT id, link, time_created, time_checked
+                FROM link
+                WHERE link.time_checked < NOW() - INTERVAL '1 minute';
+                """;
+        return jdbcTemplate.query(sql, linkRowMapper);
+    }
+
     private boolean ifChatLinkExist(long chatId, long linkId) {
         String sql = "SELECT count(*) FROM chat_link WHERE chat_id = ? AND link_id = ?";
         long ans = jdbcTemplate.query(sql, ResultSet::getLong, chatId, linkId).get(0);
