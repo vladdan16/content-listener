@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 @Component
 public class ChatRowMapper implements RowMapper<ChatDto> {
@@ -14,6 +15,7 @@ public class ChatRowMapper implements RowMapper<ChatDto> {
     @Override
     public ChatDto mapRow(@NotNull ResultSet rs, int rowNum) throws SQLException {
         long id = rs.getLong("id");
-        return new ChatDto(id);
+        Timestamp timestamp = rs.getTimestamp("time_created");
+        return new ChatDto(id, timestamp);
     }
 }

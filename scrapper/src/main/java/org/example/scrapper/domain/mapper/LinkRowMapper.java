@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+
 
 @Component
 public class LinkRowMapper implements RowMapper<LinkDto> {
@@ -14,7 +16,8 @@ public class LinkRowMapper implements RowMapper<LinkDto> {
     public LinkDto mapRow(@NotNull ResultSet rs, int rowNum) throws SQLException {
         long id = rs.getLong("id");
         String link = rs.getString("link");
-        long ownerId = rs.getLong("owner_id");
-        return new LinkDto(id, link, ownerId);
+        Timestamp timeCreated = rs.getTimestamp("time_created");
+        Timestamp timeChecked = rs.getTimestamp("time_checked");
+        return new LinkDto(id, link, timeCreated, timeChecked);
     }
 }

@@ -4,14 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.sql.Timestamp;
 
+/**
+ * Class that represents Chat entity in repo
+ */
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatDto {
-    @Id
+    /**
+     * ID of telegram chat
+     */
     private long id;
+
+    /**
+     * Time when chat was rgistered
+     */
+    private Timestamp timeCreated;
 }

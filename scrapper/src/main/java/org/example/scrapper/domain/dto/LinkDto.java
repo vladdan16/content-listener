@@ -4,16 +4,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.sql.Timestamp;
 
+/**
+ * Class that represents Link entity in repo
+ */
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class LinkDto {
-    @Id
+    /**
+     * ID of link
+     */
     private long id;
+    /**
+     * String value of link
+     */
     private String link;
-    private long ownerId;
+    /**
+     * Time when link was created
+     */
+    private Timestamp timeCreated;
+    /**
+     * Time when link was updated
+     */
+    private Timestamp timeUpdated;
 }
