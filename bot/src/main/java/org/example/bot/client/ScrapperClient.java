@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 public class ScrapperClient {
     private final WebClient scrapperWebClient;
+
     public void registerChat(long id) {
         scrapperWebClient.post()
                 .uri("/tg-chat/{id}", id)
