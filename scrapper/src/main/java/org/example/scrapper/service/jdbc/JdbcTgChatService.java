@@ -13,11 +13,11 @@ public class JdbcTgChatService implements TgChatService {
     private final JdbcChatDao chatRepository;
     @Override
     public void register(long tgChatId) {
-
+        chatRepository.add(tgChatId);
     }
 
     @Override
     public void unregister(long tgChatId) {
-
+        chatRepository.remove(tgChatId);
     }
 }

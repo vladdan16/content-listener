@@ -22,18 +22,14 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public LinkResponse add(long tgChatId, @NotNull URI url) {
-        // TODO: fix adding to repo
-        LinkDto link = new LinkDto();
-        link.setOwnerId(tgChatId);
-        link.setLink(url.toString());
-        linkRepository.add(link);
-        return new LinkResponse(link.getId(), url.toString());
+        LinkDto link = linkRepository.add(url.toString(), tgChatId);
+        return new LinkResponse(link.getId(), link.getLink());
     }
 
     @Override
     public LinkResponse remove(long tgChatId, @NotNull URI url) {
-        linkRepository.remove(url.toString());
-        return new LinkResponse(1L, url.toString());
+        LinkDto link = linkRepository.remove(url.toString(), tgChatId);
+        return new LinkResponse(link.getId(), link.getLink());
     }
 
     @Override
