@@ -42,7 +42,7 @@ public class JdbcLinkDao implements LinkDao {
 
     @Override
     @Transactional
-    public void remove(String link, Long chatId) {
+    public LinkDto remove(String link, Long chatId) {
         LinkDto linkDto = findLink(link);
         if (linkDto == null) {
             throw new RuntimeException("Unable to remove non-existing link");
@@ -56,6 +56,7 @@ public class JdbcLinkDao implements LinkDao {
             sql = "DELETE FROM link WHERE link = ?";
             jdbcTemplate.update(sql, link);
         }
+        return linkDto;
     }
 
     @Override

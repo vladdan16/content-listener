@@ -21,8 +21,9 @@ public interface LinkDao {
      * Method that removes links from repo
      * @param link String value of link
      * @param chatId id of telegram chat
+     * @return Link tat was removed
      */
-    void remove(String link, Long chatId);
+    LinkDto remove(String link, Long chatId);
 
     /**
      * Method that finds all links in repo
