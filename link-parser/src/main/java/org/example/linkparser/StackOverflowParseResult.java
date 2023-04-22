@@ -10,4 +10,9 @@ public record StackOverflowParseResult(String id) implements ParseResult {
     public String toString() {
         return id;
     }
+
+    @Override
+    public String getLinkType() {
+        return "stackoverflow";
+    }
 }
