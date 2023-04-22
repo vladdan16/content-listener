@@ -26,7 +26,11 @@ public class LinkDto {
      */
     private Timestamp timeCreated;
     /**
-     * Time when link was updated
+     * Time when link was checked
      */
-    private Timestamp timeUpdated;
+    private Timestamp timeChecked;
+    /**
+     * Time when content was updated
+     */
+    private Timestamp updatedAt;
 }

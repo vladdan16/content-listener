@@ -18,6 +18,7 @@ public class LinkRowMapper implements RowMapper<LinkDto> {
         String link = rs.getString("link");
         Timestamp timeCreated = rs.getTimestamp("time_created");
         Timestamp timeChecked = rs.getTimestamp("time_checked");
-        return new LinkDto(id, link, timeCreated, timeChecked);
+        Timestamp updatedAt = rs.getTimestamp("updated_at");
+        return new LinkDto(id, link, timeCreated, timeChecked, updatedAt);
     }
 }

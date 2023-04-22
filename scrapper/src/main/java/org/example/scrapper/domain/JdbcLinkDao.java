@@ -28,9 +28,9 @@ public class JdbcLinkDao implements LinkDao {
         LinkDto existingLink = findLink(link);
         if (existingLink == null) {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            String sql = "INSERT INTO link (link, time_created, time_checked) VALUES (?, ?, ?) RETURNING id";
-            Long id = jdbcTemplate.queryForObject(sql, Long.class, link, timestamp, timestamp);
-            existingLink = new LinkDto(id, link, timestamp, timestamp);
+            String sql = "INSERT INTO link (link, time_created) VALUES (?, ?) RETURNING id";
+            Long id = jdbcTemplate.queryForObject(sql, Long.class, link, timestamp);
+            existingLink = new LinkDto(id, link, timestamp, null, null);
         }
         if (ifChatLinkExist(chatId, existingLink.getId())) {
             throw new RuntimeException("Unable to track link, that already tracked");
@@ -66,15 +66,21 @@ public class JdbcLinkDao implements LinkDao {
     }
 
     @Override
-    public void update(String link) {
+    public void update(String link, Timestamp updatedAt) {
         String sql = "UPDATE link SET time_checked = NOW() WHERE link = ?";
         jdbcTemplate.update(sql, link);
+
+        sql = "UPDATE link SET updated_at = ? WHERE link = ?";
+        jdbcTemplate.update(sql, updatedAt, link);
     }
 
     @Override
     public LinkDto findLink(String link) {
         String sql = "SELECT * FROM link WHERE link.link = ?";
         List<LinkDto> list = jdbcTemplate.query(sql, linkRowMapper, link);
+        if (list.isEmpty()) {
+            return null;
+        }
         return list.get(0);
     }
 
@@ -90,13 +96,14 @@ public class JdbcLinkDao implements LinkDao {
     }
 
     @Override
-    public List<LinkDto> findAllOldLinks() {
+    public List<LinkDto> findAllOldLinks(String interval) {
         String sql = """
-                SELECT id, link, time_created, time_checked
+                SELECT *
                 FROM link
-                WHERE link.time_checked < NOW() - INTERVAL '1 minute';
+                WHERE link.time_checked < NOW() - INTERVAL ?
+                OR link.time_checked IS NULL
                 """;
-        return jdbcTemplate.query(sql, linkRowMapper);
+        return jdbcTemplate.query(sql, linkRowMapper, interval);
     }
 
     private boolean ifChatLinkExist(long chatId, long linkId) {
