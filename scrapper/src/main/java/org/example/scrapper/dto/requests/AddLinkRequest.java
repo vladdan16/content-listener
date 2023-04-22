@@ -1,4 +1,6 @@
 package org.example.scrapper.dto.requests;
 
-public record AddLinkRequest(String url) {
+import java.net.URI;
+
+public record AddLinkRequest(URI url) {
 }

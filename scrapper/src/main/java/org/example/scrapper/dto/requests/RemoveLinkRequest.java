@@ -1,4 +1,6 @@
 package org.example.scrapper.dto.requests;
 
-public record RemoveLinkRequest(String url) {
+import java.net.URI;
+
+public record RemoveLinkRequest(URI url) {
 }
