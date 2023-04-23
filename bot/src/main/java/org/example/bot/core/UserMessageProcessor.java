@@ -21,6 +21,11 @@ public class UserMessageProcessor {
         UserMessageProcessor.commandList = commandList;
     }
 
+    /**
+     * List of all possible commands
+     *
+     * @return List<Command>
+     */
     public static List<? extends Command> commands() {
         return commandList;
     }

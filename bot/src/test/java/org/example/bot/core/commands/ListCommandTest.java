@@ -33,6 +33,7 @@ public class ListCommandTest {
     Message message;
     @Mock
     Update update;
+
     @Before
     public void init() {
         MockitoAnnotations.openMocks(this);
@@ -58,7 +59,7 @@ public class ListCommandTest {
         long chatId = 123L;
         when(chat.id()).thenReturn(chatId);
         when(message.chat()).thenReturn(chat);
-        when(update.message()). thenReturn(message);
+        when(update.message()).thenReturn(message);
         List<LinkResponse> links = new ArrayList<>();
         links.add(new LinkResponse(1L, new URI("https://github.com/vladdan16/content-listener")));
         links.add(new LinkResponse(2L, new URI("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c")));
