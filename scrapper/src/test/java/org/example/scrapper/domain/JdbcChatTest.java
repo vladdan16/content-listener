@@ -2,6 +2,7 @@ package org.example.scrapper.domain;
 
 import org.example.scrapper.IntegrationEnvironment;
 import org.example.scrapper.domain.dto.ChatDto;
+import org.example.scrapper.domain.dto.LinkDto;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -24,20 +25,34 @@ public class JdbcChatTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     public void addTest() {
-        chatRepository.add(1L);
+        chatRepository.add(2L);
         List<ChatDto> chats = chatRepository.findAll();
-        assertEquals(chats.size(), 1);
-        assertEquals(chats.get(0).getId(), 1L);
+        assertEquals(2, chats.size());
+        assertEquals(2L, chats.get(2).getId());
     }
 
     @Test
     @Transactional
     @Rollback
     public void removeTest() {
-        chatRepository.add(1L);
-        chatRepository.remove(1L);
+        chatRepository.add(2L);
+        chatRepository.remove(2L);
         List<ChatDto> chats = chatRepository.findAll();
-        assertEquals(chats.size(), 0);
+        assertEquals(1, chats.size());
+    }
+
+    @Test
+    @Transactional
+    public void findAllTest() {
+        List<ChatDto> chats = chatRepository.findAll();
+        assertEquals(1, chats.size());
+    }
+
+    @Test
+    @Transactional
+    public void findAllLinksByIdTest() {
+        List<LinkDto> links = chatRepository.findAllLinksById(1L);
+        assertEquals(1, links.size());
     }
 
 }

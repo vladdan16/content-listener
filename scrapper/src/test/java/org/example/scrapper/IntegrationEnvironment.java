@@ -10,9 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Testcontainers
 public class IntegrationEnvironment {
@@ -36,6 +34,8 @@ public class IntegrationEnvironment {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        setUpTestData();
     }
 
     private static void performMigrations() {
@@ -54,6 +54,33 @@ public class IntegrationEnvironment {
             );
             liquibase.update("");
         } catch (LiquibaseException | SQLException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void setUpTestData() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO chat (id, time_created) VALUES (?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setTimestamp(2, timestamp);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link (id, link, time_created, time_checked, updated_at) VALUES (?, ?, ?, ?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setString(2, "github.com/user/repo");
+            statement.setTimestamp(3, timestamp);
+            statement.setTimestamp(4, timestamp);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO chat_link (chat_id, link_id) VALUES (?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setLong(2, 1L);
+            statement.executeUpdate();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
