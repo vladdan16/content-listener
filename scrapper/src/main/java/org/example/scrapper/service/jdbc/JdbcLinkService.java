@@ -1,8 +1,9 @@
 package org.example.scrapper.service.jdbc;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.domain.JdbcLinkDao;
 import org.example.scrapper.domain.dto.LinkDto;
+import org.example.scrapper.domain.interfaces.ChatDao;
+import org.example.scrapper.domain.interfaces.LinkDao;
 import org.example.scrapper.dto.responses.LinkResponse;
 import org.example.scrapper.dto.responses.ListLinksResponse;
 import org.example.scrapper.service.interfaces.LinkService;
@@ -18,7 +19,8 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
-    private final JdbcLinkDao linkRepository;
+    private final LinkDao linkRepository;
+    private final ChatDao chatRepository;
 
     @Override
     public LinkResponse add(long tgChatId, @NotNull URI url) {
@@ -34,7 +36,7 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public ListLinksResponse listAll(long tgChatId) {
-        List<LinkDto> list = linkRepository.findAll();
+        List<LinkDto> list = chatRepository.findAllLinksById(tgChatId);
         List<LinkResponse> linkResponses = new ArrayList<>();
         for (LinkDto e : list) {
             linkResponses.add(new LinkResponse(e.getId(), e.getLink()));
