@@ -46,19 +46,30 @@ public class LinkUpdaterScheduler {
         List<LinkDto> list = linkRepository.findAllOldLinks(INTERVAL);
         for (LinkDto link : list) {
             ParseResult result = parser.parseUrl(link.getLink());
+            if (result == null) {
+                System.out.println("Incorrect link type");
+                continue;
+            }
             switch (result.getLinkType()) {
                 case "github" -> {
                     // parse link
                     GithubParseResult githubResult = (GithubParseResult) result;
                     // check for updates
                     GithubResponse githubResponse = githubClient.fetchRepository(githubResult.user(), githubResult.repo());
-                    // compare time
+                    // process update
                     OffsetDateTime updatedAt = githubResponse.updatedAt();
-                    OffsetDateTime lastUpdated = link.getUpdatedAt().toInstant().atOffset(updatedAt.getOffset());
-                    link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
-                    link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
-                    updateDB(link);
-                    if (updatedAt.isAfter(lastUpdated)) {
+                    if (link.getUpdatedAt() != null) {
+                        OffsetDateTime lastUpdated = link.getUpdatedAt().toInstant().atOffset(updatedAt.getOffset());
+                        link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
+                        link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
+                        linkRepository.update(link);
+                        if (updatedAt.isAfter(lastUpdated)) {
+                            callBot(link, GITHUB_DESCRIPTION);
+                        }
+                    } else {
+                        link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
+                        link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
+                        linkRepository.update(link);
                         callBot(link, GITHUB_DESCRIPTION);
                     }
                 }
@@ -67,13 +78,20 @@ public class LinkUpdaterScheduler {
                     StackOverflowParseResult stackOverflowResult = (StackOverflowParseResult) result;
                     // check for updates
                     StackOverflowResponse stackOverflowResponse = stackOverflowClient.fetchQuestion(stackOverflowResult.id());
-                    // compare time
+                    // process update
                     OffsetDateTime updatedAt = stackOverflowResponse.updatedAt();
-                    OffsetDateTime lastUpdated = link.getUpdatedAt().toInstant().atOffset(updatedAt.getOffset());
-                    link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
-                    link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
-                    updateDB(link);
-                    if (updatedAt.isAfter(lastUpdated)) {
+                    if (link.getUpdatedAt() != null) {
+                        OffsetDateTime lastUpdated = link.getUpdatedAt().toInstant().atOffset(updatedAt.getOffset());
+                        link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
+                        link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
+                        linkRepository.update(link);
+                        if (updatedAt.isAfter(lastUpdated)) {
+                            callBot(link, STACKOVERFLOW_DESCRIPTION);
+                        }
+                    } else {
+                        link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
+                        link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
+                        linkRepository.update(link);
                         callBot(link, STACKOVERFLOW_DESCRIPTION);
                     }
                 }
@@ -88,9 +106,5 @@ public class LinkUpdaterScheduler {
                 .map(ChatDto::getId)
                 .toList();
         botClient.update(link.getId(), link.getLink(), description, tgChatIds);
-    }
-
-    private void updateDB(LinkDto link) {
-        linkRepository.update(link.getLink(), link.getUpdatedAt());
     }
 }

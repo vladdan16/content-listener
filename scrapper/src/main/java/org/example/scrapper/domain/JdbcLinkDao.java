@@ -66,12 +66,12 @@ public class JdbcLinkDao implements LinkDao {
     }
 
     @Override
-    public void update(String link, Timestamp updatedAt) {
-        String sql = "UPDATE link SET time_checked = NOW() WHERE link = ?";
-        jdbcTemplate.update(sql, link);
+    public void update(LinkDto link) {
+        String sql = "UPDATE link SET time_checked = ? WHERE link = ?";
+        jdbcTemplate.update(sql, link.getTimeChecked(), link.getLink());
 
         sql = "UPDATE link SET updated_at = ? WHERE link = ?";
-        jdbcTemplate.update(sql, updatedAt, link);
+        jdbcTemplate.update(sql, link.getUpdatedAt(), link.getLink());
     }
 
     @Override
@@ -96,14 +96,9 @@ public class JdbcLinkDao implements LinkDao {
     }
 
     @Override
-    public List<LinkDto> findAllOldLinks(String interval) {
-        String sql = """
-                SELECT *
-                FROM link
-                WHERE link.time_checked < NOW() - INTERVAL ?
-                OR link.time_checked IS NULL
-                """;
-        return jdbcTemplate.query(sql, linkRowMapper, interval);
+    public List<LinkDto> findAllOldLinks(@NotNull String interval) {
+        String sql = " SELECT * FROM link WHERE link.time_checked < NOW() - INTERVAL '" + interval + "' OR link.time_checked IS NULL ";
+        return jdbcTemplate.query(sql, linkRowMapper);
     }
 
     private boolean ifChatLinkExist(long chatId, long linkId) {

@@ -7,5 +7,6 @@ create table if not exists link
     id           bigint default nextval('link_sequence') primary key,
     link         varchar unique,
     time_created timestamp,
-    time_checked timestamp
+    time_checked timestamp,
+    updated_at   timestamp
 );

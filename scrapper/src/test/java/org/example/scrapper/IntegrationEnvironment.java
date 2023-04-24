@@ -39,7 +39,7 @@ public class IntegrationEnvironment {
     }
 
     private static void performMigrations() {
-        Path path = new File("/home/vladdan/Documents/GitHub/content-listener/migration/migrations")
+        Path path = new File("/home/vladdan/Documents/GitHub/content-listener/scrapper/migration/migrations")
                 .toPath();
         try {
             Liquibase liquibase = new Liquibase("master.yaml",

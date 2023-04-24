@@ -58,9 +58,13 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Rollback
     public void updateTest() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        linkRepository.update(LINK, timestamp);
+        LinkDto linkDto = new LinkDto();
+        linkDto.setLink(LINK);
+        linkDto.setTimeChecked(timestamp);
+        linkDto.setUpdatedAt(timestamp);
+        linkRepository.update(linkDto);
 
-        LinkDto linkDto = linkRepository.findLink(LINK);
+        linkDto = linkRepository.findLink(LINK);
         assertEquals(timestamp, linkDto.getUpdatedAt());
     }
 

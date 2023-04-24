@@ -3,7 +3,6 @@ package org.example.scrapper.domain.interfaces;
 import org.example.scrapper.domain.dto.ChatDto;
 import org.example.scrapper.domain.dto.LinkDto;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public interface LinkDao {
      * Method that updates link in repo
      * @param link String value of link
      */
-    void update(String link, Timestamp updatedAt);
+    void update(LinkDto link);
 
     /**
      * Method that finds link in repo by String value
