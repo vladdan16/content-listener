@@ -22,8 +22,6 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Autowired
     private JdbcChatDao chatRepository;
 
-    private final static String LINK = "github.com/user/repo";
-
     @Test
     @Transactional
     @Rollback

@@ -23,7 +23,8 @@ public class DatabaseTest extends IntegrationEnvironment {
             throw new RuntimeException(e);
         }
 
-        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM link WHERE link = 'github.com'")) {
+        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM link WHERE link = ?")) {
+            statement.setString(1, LINK);
             ResultSet resultSet = statement.executeQuery();
 
             resultSet.next();

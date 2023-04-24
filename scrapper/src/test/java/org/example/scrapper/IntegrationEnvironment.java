@@ -16,6 +16,7 @@ import java.sql.*;
 public class IntegrationEnvironment {
     public static final PostgreSQLContainer<?> container;
     public static final Connection connection;
+    public static final String LINK = "github.com/user/repo";
 
     static {
         container = new PostgreSQLContainer<>("postgres:15.2-alpine")
@@ -69,9 +70,10 @@ public class IntegrationEnvironment {
         }
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link (id, link, time_created, time_checked, updated_at) VALUES (?, ?, ?, ?, ?)")) {
             statement.setLong(1, 1L);
-            statement.setString(2, "github.com/user/repo");
+            statement.setString(2, LINK);
             statement.setTimestamp(3, timestamp);
             statement.setTimestamp(4, timestamp);
+            statement.setTimestamp(5, timestamp);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
