@@ -1,8 +1,8 @@
 package org.example.scrapper.service.jdbc;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.domain.JdbcChatDao;
-import org.example.scrapper.domain.JdbcLinkDao;
+import org.example.scrapper.domain.jdbc.JdbcChatDao;
+import org.example.scrapper.domain.jdbc.JdbcLinkDao;
 import org.example.scrapper.domain.dto.LinkDto;
 import org.example.scrapper.dto.responses.LinkResponse;
 import org.example.scrapper.dto.responses.ListLinksResponse;

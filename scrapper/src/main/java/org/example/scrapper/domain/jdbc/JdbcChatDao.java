@@ -1,4 +1,4 @@
-package org.example.scrapper.domain;
+package org.example.scrapper.domain.jdbc;
 
 import lombok.RequiredArgsConstructor;
 import org.example.scrapper.domain.dto.ChatDto;

@@ -3,6 +3,7 @@ package org.example.scrapper.domain;
 import org.example.scrapper.IntegrationEnvironment;
 import org.example.scrapper.domain.dto.ChatDto;
 import org.example.scrapper.domain.dto.LinkDto;
+import org.example.scrapper.domain.jdbc.JdbcChatDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
