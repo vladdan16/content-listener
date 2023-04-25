@@ -8,6 +8,6 @@ import java.time.Duration;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test, Scheduler scheduler) {
+public record ApplicationConfig(@NotNull String test, Scheduler scheduler, AccessType databaseAccessType) {
     public record Scheduler(Duration interval) {}
 }

@@ -5,13 +5,11 @@ import org.example.scrapper.domain.mapper.ChatRowMapper;
 import org.example.scrapper.domain.mapper.LinkRowMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-@Repository
 @RequiredArgsConstructor
 public class JdbcChatDao {
     private final JdbcTemplate jdbcTemplate;
