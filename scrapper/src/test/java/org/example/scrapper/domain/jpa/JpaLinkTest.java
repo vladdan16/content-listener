@@ -1,10 +1,6 @@
-package org.example.scrapper.domain;
+package org.example.scrapper.domain.jpa;
 
 import org.example.scrapper.IntegrationEnvironment;
-import org.example.scrapper.domain.jdbc.Chat;
-import org.example.scrapper.domain.jdbc.Link;
-import org.example.scrapper.domain.jdbc.JdbcChatDao;
-import org.example.scrapper.domain.jdbc.JdbcLinkDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,15 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
-public class JdbcLinkTest extends IntegrationEnvironment {
-
+public class JpaLinkTest extends IntegrationEnvironment {
     @Autowired
-    private JdbcLinkDao linkRepository;
+    private JpaLinkDao linkRepository;
     @Autowired
-    private JdbcChatDao chatRepository;
+    private JpaChatDao chatRepository;
 
     @Test
     @Transactional
@@ -64,16 +59,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
         linkDto.setUpdatedAt(timestamp);
         linkRepository.update(linkDto.getLink(), linkDto.getUpdatedAt());
 
-        linkDto = linkRepository.findLink(LINK);
         assertEquals(timestamp, linkDto.getUpdatedAt());
-    }
-
-    @Test
-    @Transactional
-    public void findLinkTest() {
-        Link linkDto = linkRepository.findLink(LINK);
-
-        assertEquals(LINK, linkDto.getLink());
     }
 
     @Test

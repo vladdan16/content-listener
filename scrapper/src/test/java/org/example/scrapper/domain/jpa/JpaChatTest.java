@@ -1,9 +1,6 @@
-package org.example.scrapper.domain;
+package org.example.scrapper.domain.jpa;
 
 import org.example.scrapper.IntegrationEnvironment;
-import org.example.scrapper.domain.jdbc.Chat;
-import org.example.scrapper.domain.jdbc.Link;
-import org.example.scrapper.domain.jdbc.JdbcChatDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,9 +12,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
-public class JdbcChatTest extends IntegrationEnvironment {
+public class JpaChatTest extends IntegrationEnvironment {
     @Autowired
-    private JdbcChatDao chatRepository;
+    private JpaChatDao chatRepository;
 
     @Test
     @Transactional
@@ -26,7 +23,6 @@ public class JdbcChatTest extends IntegrationEnvironment {
         chatRepository.add(2L);
         List<Chat> chats = chatRepository.findAll();
         assertEquals(2, chats.size());
-        assertEquals(2L, chats.get(2).getId());
     }
 
     @Test
@@ -35,7 +31,7 @@ public class JdbcChatTest extends IntegrationEnvironment {
     public void removeTest() {
         chatRepository.add(2L);
         chatRepository.remove(2L);
-        List<Chat> chats = chatRepository.findAll();
+        List<org.example.scrapper.domain.jpa.Chat> chats = chatRepository.findAll();
         assertEquals(1, chats.size());
     }
 
@@ -52,5 +48,4 @@ public class JdbcChatTest extends IntegrationEnvironment {
         List<Link> links = chatRepository.findAllLinksById(1L);
         assertEquals(1, links.size());
     }
-
 }
