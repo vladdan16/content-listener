@@ -17,9 +17,12 @@ public class JpaLinkDao {
 
     @Transactional
     public Link add(String url, Long chatId) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Link link = linkRepository.findLink(url);
+        if (link == null) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            link = new Link(null, url, timestamp, null, null);
+        }
         Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new EntityNotFoundException("Chat not found"));
-        Link link = new Link(null, url, timestamp, null, null);
         link.getChats().add(chat);
         chat.getLinks().add(link);
         return linkRepository.save(link);
@@ -48,6 +51,14 @@ public class JpaLinkDao {
         return linkRepository.findAll();
     }
 
+    public void update(String url, Timestamp updatedAt) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Link link = linkRepository.findLink(url);
+        link.setTimeChecked(timestamp);
+        link.setUpdatedAt(updatedAt);
+        linkRepository.save(link);
+    }
+
     public List<Chat> findSubscribers(String url) {
         Link link = linkRepository.findLink(url);
 
@@ -59,7 +70,7 @@ public class JpaLinkDao {
     }
 
     /**
-     * Method to find links that was not checked for some intreval
+     * Method to find links that was not checked for some interval
      * @param interval String value in the following format "X days/hours/minutes/seconds"
      * @return List of Links
      */

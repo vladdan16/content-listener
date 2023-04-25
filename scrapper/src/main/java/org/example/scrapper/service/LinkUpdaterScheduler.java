@@ -9,11 +9,8 @@ import org.example.linkparser.UrlParser;
 import org.example.scrapper.client.BotClient;
 import org.example.scrapper.client.GithubClient;
 import org.example.scrapper.client.StackOverflowClient;
-import org.example.scrapper.domain.jdbc.Chat;
-import org.example.scrapper.domain.jdbc.JdbcLinkDao;
-import org.example.scrapper.domain.jdbc.Link;
-import org.example.scrapper.dto.responses.GithubResponse;
-import org.example.scrapper.dto.responses.StackOverflowResponse;
+import org.example.scrapper.dto.responses.*;
+import org.example.scrapper.service.interfaces.LinkService;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -30,7 +27,7 @@ public class LinkUpdaterScheduler {
     private final GithubClient githubClient;
     private final StackOverflowClient stackOverflowClient;
     private final BotClient botClient;
-    private final JdbcLinkDao linkRepository;
+    private final LinkService linkService;
 
     private static final String INTERVAL = "1 hour";
     private static final String GITHUB_DESCRIPTION = "Update appeared at Github by the following link";
@@ -43,9 +40,9 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
-        List<Link> list = linkRepository.findAllOldLinks(INTERVAL);
-        for (Link link : list) {
-            ParseResult result = parser.parseUrl(link.getLink());
+        ListLinksResponse list = linkService.findAllOldLinks(INTERVAL);
+        for (LinkResponse link : list.links()) {
+            ParseResult result = parser.parseUrl(link.url());
             if (result == null) {
                 System.out.println("Incorrect link type");
                 continue;
@@ -58,18 +55,16 @@ public class LinkUpdaterScheduler {
                     GithubResponse githubResponse = githubClient.fetchRepository(githubResult.user(), githubResult.repo());
                     // process update
                     OffsetDateTime updatedAt = githubResponse.updatedAt();
-                    if (link.getUpdatedAt() != null) {
-                        OffsetDateTime lastUpdated = link.getUpdatedAt().toInstant().atOffset(updatedAt.getOffset());
-                        link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
-                        link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
-                        linkRepository.update(link.getLink(), link.getUpdatedAt());
+                    if (link.updatedAt() != null) {
+                        OffsetDateTime lastUpdated = link.updatedAt().toInstant().atOffset(updatedAt.getOffset());
+                        Timestamp updatedAtTimestamp =  new Timestamp(updatedAt.toInstant().toEpochMilli());
+                        linkService.update(link.url(), updatedAtTimestamp);
                         if (updatedAt.isAfter(lastUpdated)) {
                             callBot(link, GITHUB_DESCRIPTION);
                         }
                     } else {
-                        link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
-                        link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
-                        linkRepository.update(link.getLink(), link.getUpdatedAt());
+                        Timestamp updatedAtTimestamp =  new Timestamp(updatedAt.toInstant().toEpochMilli());
+                        linkService.update(link.url(), updatedAtTimestamp);
                         callBot(link, GITHUB_DESCRIPTION);
                     }
                 }
@@ -80,18 +75,16 @@ public class LinkUpdaterScheduler {
                     StackOverflowResponse stackOverflowResponse = stackOverflowClient.fetchQuestion(stackOverflowResult.id());
                     // process update
                     OffsetDateTime updatedAt = stackOverflowResponse.updatedAt();
-                    if (link.getUpdatedAt() != null) {
-                        OffsetDateTime lastUpdated = link.getUpdatedAt().toInstant().atOffset(updatedAt.getOffset());
-                        link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
-                        link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
-                        linkRepository.update(link.getLink(), link.getUpdatedAt());
+                    if (link.updatedAt() != null) {
+                        OffsetDateTime lastUpdated = link.updatedAt().toInstant().atOffset(updatedAt.getOffset());
+                        Timestamp updatedAtTimestamp =  new Timestamp(updatedAt.toInstant().toEpochMilli());
+                        linkService.update(link.url(), updatedAtTimestamp);
                         if (updatedAt.isAfter(lastUpdated)) {
                             callBot(link, STACKOVERFLOW_DESCRIPTION);
                         }
                     } else {
-                        link.setTimeChecked(new Timestamp(System.currentTimeMillis()));
-                        link.setUpdatedAt(new Timestamp(updatedAt.toInstant().toEpochMilli()));
-                        linkRepository.update(link.getLink(), link.getUpdatedAt());
+                        Timestamp updatedAtTimestamp =  new Timestamp(updatedAt.toInstant().toEpochMilli());
+                        linkService.update(link.url(), updatedAtTimestamp);
                         callBot(link, STACKOVERFLOW_DESCRIPTION);
                     }
                 }
@@ -100,11 +93,11 @@ public class LinkUpdaterScheduler {
         }
     }
 
-    private void callBot(Link link, String description) {
-        List<Long> tgChatIds = linkRepository.findSubscribers(link.getLink())
+    private void callBot(LinkResponse link, String description) {
+        List<Long> tgChatIds = linkService.findSubscribers(link.url()).chats()
                 .stream()
-                .map(Chat::getId)
+                .map(ChatResponse::id)
                 .toList();
-        botClient.update(link.getId(), link.getLink(), description, tgChatIds);
+        botClient.update(link.id(), link.url(), description, tgChatIds);
     }
 }
