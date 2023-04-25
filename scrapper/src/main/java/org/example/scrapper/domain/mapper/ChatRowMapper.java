@@ -1,6 +1,6 @@
 package org.example.scrapper.domain.mapper;
 
-import org.example.scrapper.domain.dto.ChatDto;
+import org.example.scrapper.domain.jdbc.Chat;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -10,12 +10,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 @Component
-public class ChatRowMapper implements RowMapper<ChatDto> {
+public class ChatRowMapper implements RowMapper<Chat> {
 
     @Override
-    public ChatDto mapRow(@NotNull ResultSet rs, int rowNum) throws SQLException {
+    public Chat mapRow(@NotNull ResultSet rs, int rowNum) throws SQLException {
         long id = rs.getLong("id");
         Timestamp timestamp = rs.getTimestamp("time_created");
-        return new ChatDto(id, timestamp);
+        return new Chat(id, timestamp);
     }
 }

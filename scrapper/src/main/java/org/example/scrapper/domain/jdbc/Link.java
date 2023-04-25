@@ -1,4 +1,4 @@
-package org.example.scrapper.domain.dto;
+package org.example.scrapper.domain.jdbc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkDto {
+public class Link {
     /**
      * ID of link
      */

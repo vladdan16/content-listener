@@ -1,8 +1,8 @@
 package org.example.scrapper.domain;
 
 import org.example.scrapper.IntegrationEnvironment;
-import org.example.scrapper.domain.dto.ChatDto;
-import org.example.scrapper.domain.dto.LinkDto;
+import org.example.scrapper.domain.jdbc.Chat;
+import org.example.scrapper.domain.jdbc.Link;
 import org.example.scrapper.domain.jdbc.JdbcChatDao;
 import org.example.scrapper.domain.jdbc.JdbcLinkDao;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     public void addTest() {
         chatRepository.add(1L);
         linkRepository.add("github.com", 1L);
-        List<LinkDto> links = linkRepository.findAll();
+        List<Link> links = linkRepository.findAll();
         assertEquals(links.size(), 1);
         assertEquals(links.get(0).getLink(), "github.com");
     }
@@ -42,14 +42,14 @@ public class JdbcLinkTest extends IntegrationEnvironment {
         chatRepository.add(1L);
         linkRepository.add("github.com", 1L);
         linkRepository.remove("github.com", 1L);
-        List<LinkDto> links = linkRepository.findAll();
+        List<Link> links = linkRepository.findAll();
         assertEquals(links.size(), 0);
     }
 
     @Test
     @Transactional
     public void findAllTest() {
-        List<LinkDto> links = linkRepository.findAll();
+        List<Link> links = linkRepository.findAll();
         assertEquals(1, links.size());
     }
 
@@ -58,11 +58,11 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Rollback
     public void updateTest() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        LinkDto linkDto = new LinkDto();
+        Link linkDto = new Link();
         linkDto.setLink(LINK);
         linkDto.setTimeChecked(timestamp);
         linkDto.setUpdatedAt(timestamp);
-        linkRepository.update(linkDto);
+        linkRepository.update(linkDto.getLink(), linkDto.getUpdatedAt());
 
         linkDto = linkRepository.findLink(LINK);
         assertEquals(timestamp, linkDto.getUpdatedAt());
@@ -71,7 +71,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Test
     @Transactional
     public void findLinkTest() {
-        LinkDto linkDto = linkRepository.findLink(LINK);
+        Link linkDto = linkRepository.findLink(LINK);
 
         assertEquals(LINK, linkDto.getLink());
     }
@@ -79,7 +79,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
     @Test
     @Transactional
     public void findSubscribersTest() {
-        List<ChatDto> chats = linkRepository.findSubscribers(LINK);
+        List<Chat> chats = linkRepository.findSubscribers(LINK);
 
         assertEquals(1, chats.size());
     }
@@ -90,7 +90,7 @@ public class JdbcLinkTest extends IntegrationEnvironment {
         // Wait to be sure that 1 second passed since data was added
         Thread.sleep(1000);
 
-        List<LinkDto> links = linkRepository.findAllOldLinks("1 second");
+        List<Link> links = linkRepository.findAllOldLinks("1 second");
 
         assertEquals(1, links.size());
     }

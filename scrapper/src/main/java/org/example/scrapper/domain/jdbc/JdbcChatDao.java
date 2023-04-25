@@ -1,9 +1,6 @@
 package org.example.scrapper.domain.jdbc;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.domain.dto.ChatDto;
-import org.example.scrapper.domain.dto.LinkDto;
-import org.example.scrapper.domain.interfaces.ChatDao;
 import org.example.scrapper.domain.mapper.ChatRowMapper;
 import org.example.scrapper.domain.mapper.LinkRowMapper;
 import org.jetbrains.annotations.NotNull;
@@ -16,21 +13,19 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class JdbcChatDao implements ChatDao {
+public class JdbcChatDao {
     private final JdbcTemplate jdbcTemplate;
     private final ChatRowMapper chatRowMapper;
     private final LinkRowMapper linkRowMapper;
 
-    @Override
     @Transactional
-    public ChatDto add(@NotNull Long id) {
+    public Chat add(@NotNull Long id) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String sql = "INSERT INTO chat (id, time_created) VALUES (?, ?) ON CONFLICT DO NOTHING";
         jdbcTemplate.update(sql, id, timestamp);
-        return new ChatDto(id, timestamp);
+        return new Chat(id, timestamp);
     }
 
-    @Override
     @Transactional
     public void remove(long chatId) {
         String sql = "DELETE FROM chat_link WHERE chat_id=?";
@@ -39,14 +34,12 @@ public class JdbcChatDao implements ChatDao {
         jdbcTemplate.update(sql, chatId);
     }
 
-    @Override
-    public List<ChatDto> findAll() {
+    public List<Chat> findAll() {
         String sql = "SELECT * FROM chat";
         return jdbcTemplate.query(sql, chatRowMapper);
     }
 
-    @Override
-    public List<LinkDto> findAllLinksById(long chatId) {
+    public List<Link> findAllLinksById(long chatId) {
         String sql = """
                 SELECT * FROM link
                 INNER JOIN chat_link cl on link.id = cl.link_id

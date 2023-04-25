@@ -1,8 +1,8 @@
 package org.example.scrapper.domain;
 
 import org.example.scrapper.IntegrationEnvironment;
-import org.example.scrapper.domain.dto.ChatDto;
-import org.example.scrapper.domain.dto.LinkDto;
+import org.example.scrapper.domain.jdbc.Chat;
+import org.example.scrapper.domain.jdbc.Link;
 import org.example.scrapper.domain.jdbc.JdbcChatDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class JdbcChatTest extends IntegrationEnvironment {
     @Rollback
     public void addTest() {
         chatRepository.add(2L);
-        List<ChatDto> chats = chatRepository.findAll();
+        List<Chat> chats = chatRepository.findAll();
         assertEquals(2, chats.size());
         assertEquals(2L, chats.get(2).getId());
     }
@@ -35,21 +35,21 @@ public class JdbcChatTest extends IntegrationEnvironment {
     public void removeTest() {
         chatRepository.add(2L);
         chatRepository.remove(2L);
-        List<ChatDto> chats = chatRepository.findAll();
+        List<Chat> chats = chatRepository.findAll();
         assertEquals(1, chats.size());
     }
 
     @Test
     @Transactional
     public void findAllTest() {
-        List<ChatDto> chats = chatRepository.findAll();
+        List<Chat> chats = chatRepository.findAll();
         assertEquals(1, chats.size());
     }
 
     @Test
     @Transactional
     public void findAllLinksByIdTest() {
-        List<LinkDto> links = chatRepository.findAllLinksById(1L);
+        List<Link> links = chatRepository.findAllLinksById(1L);
         assertEquals(1, links.size());
     }
 

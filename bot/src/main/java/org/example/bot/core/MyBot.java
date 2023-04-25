@@ -35,7 +35,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
 
     @Override
     public int process(List<Update> list) {
-        //return UpdatesListener.CONFIRMED_UPDATES_NONE;
+        //return UpdatesListener.CONFIRMED_UPDATES_ALL;
         list.forEach(update -> {
             SendMessage message = userMessageProcessor.process(update);
             if (message != null) {
