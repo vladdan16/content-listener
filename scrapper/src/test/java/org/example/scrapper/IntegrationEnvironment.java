@@ -10,14 +10,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Testcontainers
 public class IntegrationEnvironment {
     public static final PostgreSQLContainer<?> container;
     public static final Connection connection;
+    public static final String LINK = "github.com/user/repo";
 
     static {
         container = new PostgreSQLContainer<>("postgres:15.2-alpine")
@@ -36,10 +35,12 @@ public class IntegrationEnvironment {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        setUpTestData();
     }
 
     private static void performMigrations() {
-        Path path = new File("/home/vladdan/Documents/GitHub/content-listener/migration/migrations")
+        Path path = new File("/home/vladdan/Documents/GitHub/content-listener/scrapper/migration/migrations")
                 .toPath();
         try {
             Liquibase liquibase = new Liquibase("master.yaml",
@@ -54,6 +55,34 @@ public class IntegrationEnvironment {
             );
             liquibase.update("");
         } catch (LiquibaseException | SQLException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void setUpTestData() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO chat (id, time_created) VALUES (?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setTimestamp(2, timestamp);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO link (id, link, time_created, time_checked, updated_at) VALUES (?, ?, ?, ?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setString(2, LINK);
+            statement.setTimestamp(3, timestamp);
+            statement.setTimestamp(4, timestamp);
+            statement.setTimestamp(5, timestamp);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO chat_link (chat_id, link_id) VALUES (?, ?)")) {
+            statement.setLong(1, 1L);
+            statement.setLong(2, 1L);
+            statement.executeUpdate();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

@@ -57,6 +57,23 @@ public class MyBot implements AutoCloseable, UpdatesListener {
     }
 
     /**
+     * Method to process updates from scrapper and send to user
+     * @param url Link that is tracked
+     * @param description Description for user
+     * @param tgChatIds List of chats where to send update
+     */
+    public void processUpdate(String url, String description, List<Long> tgChatIds) {
+        String text = description + "\n" + url;
+        tgChatIds.forEach(id -> {
+            SendMessage message = new SendMessage(id, text);
+            BaseResponse response = telegramBot.execute(message);
+            if (!response.isOk()) {
+                System.out.println("Error while sending message: " + response.description());
+            }
+        });
+    }
+
+    /**
      * void method to set commands dor telegram bot (Bonus task)
      */
     private void setCommands() {

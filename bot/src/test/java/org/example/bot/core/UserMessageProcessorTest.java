@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.core.commands.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

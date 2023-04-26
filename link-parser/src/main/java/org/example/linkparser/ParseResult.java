@@ -10,4 +10,5 @@ public sealed interface ParseResult permits GithubParseResult, StackOverflowPars
      * @return human-readable string
      */
     String toString();
+    String getLinkType();
 }

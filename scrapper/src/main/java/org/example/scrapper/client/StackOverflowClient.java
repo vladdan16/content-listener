@@ -11,7 +11,7 @@ public class StackOverflowClient {
 
     private final WebClient stackOverflowWebClient;
 
-    public StackOverflowResponse fetchQuestion(Long questionId) {
+    public StackOverflowResponse fetchQuestion(String questionId) {
         return stackOverflowWebClient.get()
                 .uri("/questions/{id}?site=stackoverflow", questionId)
                 .retrieve()
