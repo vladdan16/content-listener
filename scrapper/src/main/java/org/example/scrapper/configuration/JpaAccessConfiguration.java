@@ -1,7 +1,7 @@
 package org.example.scrapper.configuration;
 
-import org.example.scrapper.domain.jpa.JpaChatDao;
-import org.example.scrapper.domain.jpa.JpaLinkDao;
+import org.example.scrapper.domain.jpa.ChatRepository;
+import org.example.scrapper.domain.jpa.LinkRepository;
 import org.example.scrapper.service.interfaces.ChatService;
 import org.example.scrapper.service.interfaces.LinkService;
 import org.example.scrapper.service.jpa.JpaChatService;
@@ -14,12 +14,12 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jpa")
 public class JpaAccessConfiguration {
     @Bean
-    public LinkService linkService(JpaLinkDao jpaLinkDao) {
-        return new JpaLinkService(jpaLinkDao);
+    public LinkService linkService(ChatRepository chatRepository, LinkRepository linkRepository) {
+        return new JpaLinkService(chatRepository, linkRepository);
     }
 
     @Bean
-    public ChatService chatService(JpaChatDao jpaChatDao) {
-        return new JpaChatService(jpaChatDao);
+    public ChatService chatService(ChatRepository chatRepository) {
+        return new JpaChatService(chatRepository);
     }
 }

@@ -14,13 +14,15 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class JpaChatTest extends IntegrationEnvironment {
     @Autowired
-    private JpaChatDao chatRepository;
+    private ChatRepository chatRepository;
 
     @Test
     @Transactional
     @Rollback
     public void addTest() {
-        chatRepository.add(2L);
+        Chat chat = new Chat();
+        chat.setId(2L);
+        chatRepository.save(chat);
         List<Chat> chats = chatRepository.findAll();
         assertEquals(2, chats.size());
     }
@@ -29,9 +31,11 @@ public class JpaChatTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     public void removeTest() {
-        chatRepository.add(2L);
-        chatRepository.remove(2L);
-        List<org.example.scrapper.domain.jpa.Chat> chats = chatRepository.findAll();
+        Chat chat = new Chat();
+        chat.setId(2L);
+        chat = chatRepository.save(chat);
+        chatRepository.delete(chat);
+        List<Chat> chats = chatRepository.findAll();
         assertEquals(1, chats.size());
     }
 
@@ -40,12 +44,5 @@ public class JpaChatTest extends IntegrationEnvironment {
     public void findAllTest() {
         List<Chat> chats = chatRepository.findAll();
         assertEquals(1, chats.size());
-    }
-
-    @Test
-    @Transactional
-    public void findAllLinksByIdTest() {
-        List<Link> links = chatRepository.findAllLinksById(1L);
-        assertEquals(1, links.size());
     }
 }
