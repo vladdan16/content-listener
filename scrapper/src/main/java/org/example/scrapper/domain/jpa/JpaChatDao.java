@@ -1,6 +1,7 @@
 package org.example.scrapper.domain.jpa;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Repository
 @RequiredArgsConstructor
 public class JpaChatDao {
     private final ChatRepository chatRepository;

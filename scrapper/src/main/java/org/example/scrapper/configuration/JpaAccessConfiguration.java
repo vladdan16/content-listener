@@ -1,9 +1,7 @@
 package org.example.scrapper.configuration;
 
-import org.example.scrapper.domain.jpa.ChatRepository;
 import org.example.scrapper.domain.jpa.JpaChatDao;
 import org.example.scrapper.domain.jpa.JpaLinkDao;
-import org.example.scrapper.domain.jpa.LinkRepository;
 import org.example.scrapper.service.interfaces.ChatService;
 import org.example.scrapper.service.interfaces.LinkService;
 import org.example.scrapper.service.jpa.JpaChatService;
@@ -23,15 +21,5 @@ public class JpaAccessConfiguration {
     @Bean
     public ChatService chatService(JpaChatDao jpaChatDao) {
         return new JpaChatService(jpaChatDao);
-    }
-
-    @Bean
-    public JpaLinkDao jpaLinkDao(ChatRepository chatRepository, LinkRepository linkRepository) {
-        return new JpaLinkDao(chatRepository, linkRepository);
-    }
-
-    @Bean
-    public JpaChatDao jpaChatDao(ChatRepository chatRepository) {
-        return new JpaChatDao(chatRepository);
     }
 }
