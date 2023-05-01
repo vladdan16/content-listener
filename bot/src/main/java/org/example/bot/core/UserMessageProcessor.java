@@ -3,6 +3,7 @@ package org.example.bot.core;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.example.bot.core.commands.Command;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +37,7 @@ public class UserMessageProcessor {
      * @param update Update from bot
      * @return SendMessage instance for our bot
      */
-    SendMessage process(Update update) {
+    public SendMessage process(@NotNull Update update) {
         if (update.message() == null) { // do nothing
             return null;
         }
