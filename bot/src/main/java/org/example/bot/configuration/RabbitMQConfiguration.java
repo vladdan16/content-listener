@@ -7,11 +7,13 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "app", name = "use-queue", havingValue = "true")
 public class RabbitMQConfiguration {
     private final ApplicationConfig applicationConfig;
 
@@ -26,8 +28,8 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public Binding binding() {
-        return BindingBuilder.bind(queue()).to(directExchange()).with(applicationConfig.routingKey());
+    public Binding binding(DirectExchange directExchange, Queue queue) {
+        return BindingBuilder.bind(queue).to(directExchange).with(applicationConfig.routingKey());
     }
 
     @Bean
