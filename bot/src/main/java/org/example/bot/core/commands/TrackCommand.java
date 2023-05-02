@@ -5,7 +5,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.client.dto.AddLinkRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 /**
  * Class for /track command
@@ -30,7 +32,13 @@ public class TrackCommand implements Command {
         long chatId = update.message().chat().id();
         String message = update.message().text();
         String link = message.substring(command().length()).trim();
-        scrapperClient.addLink(chatId, new AddLinkRequest(link));
+        try {
+            scrapperClient.addLink(chatId, new AddLinkRequest(link));
+        } catch (WebClientResponseException e) {
+            if (e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+                return new SendMessage(chatId, "Internal server error");
+            }
+        }
         return new SendMessage(chatId, "Started tracking " + link);
     }
 
