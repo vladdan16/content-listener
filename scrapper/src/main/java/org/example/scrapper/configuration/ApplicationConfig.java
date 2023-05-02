@@ -8,9 +8,9 @@ import java.time.Duration;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test, Scheduler scheduler, AccessType databaseAccessType,
-                                @NotNull String queue, @NotNull String exchange, @NotNull String routingKey,
-                                @NotNull boolean useQueue) {
+public record ApplicationConfig(@NotNull String test, @NotNull Scheduler scheduler,
+                                @NotNull AccessType databaseAccessType, String queue, String exchange,
+                                String routingKey, @NotNull boolean useQueue) {
     public record Scheduler(Duration interval) {
     }
 }
