@@ -5,6 +5,6 @@ RUN mvn package -pl scrapper -am
 
 FROM openjdk:17-oracle
 WORKDIR /scrapper
-COPY --from=bild project/scrapper/target/scrapper-*.jar scrapper.jar
+COPY --from=build project/scrapper/target/scrapper-*.jar scrapper.jar
 EXPOSE 8081
 CMD ["java", "-jar", "scrapper.jar"]
