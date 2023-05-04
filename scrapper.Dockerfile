@@ -7,4 +7,4 @@ FROM openjdk:17-oracle
 WORKDIR /scrapper
 COPY --from=build project/scrapper/target/scrapper-*.jar scrapper.jar
 EXPOSE 8081
-CMD ["java", "-jar", "scrapper.jar"]
+CMD ["java", "-jar", "scrapper.jar", "--enable-preview"]
