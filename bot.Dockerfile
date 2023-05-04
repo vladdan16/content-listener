@@ -5,6 +5,6 @@ RUN mvn package -pl bot -am
 
 FROM openjdk:17-oracle
 WORKDIR /bot
-COPY --from=bild project/bot/target/bot-*.jar bot.jar
+COPY --from=build project/bot/target/bot-*.jar bot.jar
 EXPOSE 8080
 CMD ["java", "-jar", "bot.jar"]
