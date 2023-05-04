@@ -1,4 +1,4 @@
-FROM openjdk:17-orcle
+FROM openjdk:17-oracle
 WORKDIR /scrapper
 COPY target/scrapper-*.jar app.jar
 EXPOSE 8081
