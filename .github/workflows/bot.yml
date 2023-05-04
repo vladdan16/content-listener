@@ -20,3 +20,11 @@ jobs:
       
       - name: Build with Maven
         run: mvn package -pl bot -am
+
+      - name:
+        uses: docker/build-push-action@v2
+        with:
+          context: bot
+          file: ./Dockerfile
+          push: false
+          tags: bot:latest
