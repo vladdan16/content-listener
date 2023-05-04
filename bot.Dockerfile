@@ -1,4 +1,4 @@
-FROM maven:3.9.1-eclipse-temurin-11-alpine as build
+FROM maven:3.9.1-eclipse-temurin-17-alpine as build
 WORKDIR /project
 COPY . .
 RUN mvn package -pl bot -am
