@@ -14,6 +14,7 @@ import org.example.scrapper.domain.dto.LinkDto;
 import org.example.scrapper.domain.interfaces.LinkDao;
 import org.example.scrapper.dto.responses.GithubResponse;
 import org.example.scrapper.dto.responses.StackOverflowResponse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,22 +26,53 @@ import java.util.List;
 @Component
 @EnableScheduling
 @RequiredArgsConstructor
-public class LinkUpdaterScheduler {
+public final class LinkUpdaterScheduler {
+    /**
+     * UrlParser form link-parser module.
+     */
     private UrlParser parser;
+    /**
+     * GitHub client.
+     */
     private final GithubClient githubClient;
+    /**
+     * StackOverflow client.
+     */
     private final StackOverflowClient stackOverflowClient;
+    /**
+     * Bot client.
+     */
     private final BotClient botClient;
+    /**
+     * Link repository.
+     */
     private final LinkDao linkRepository;
 
+    /**
+     * Interval for postgres database.
+     */
     private static final String INTERVAL = "1 minute";
+    /**
+     * GitHub description.
+     */
     private static final String GITHUB_DESCRIPTION = "Update appeared at Github by the following link";
+
+    /**
+     * StackOverflow description.
+     */
     private static final String STACKOVERFLOW_DESCRIPTION = "Update appeared at Stackoverflow by the following link";
 
+    /**
+     * Method to set url parser after construction class instance.
+     */
     @PostConstruct
     public void setUrlParser() {
         parser = new UrlParser();
     }
 
+    /**
+     * Method that looks old links every N seconds.
+     */
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
         List<LinkDto> list = linkRepository.findAllOldLinks(INTERVAL);
@@ -100,7 +132,7 @@ public class LinkUpdaterScheduler {
         }
     }
 
-    private void callBot(LinkDto link, String description) {
+    private void callBot(final @NotNull LinkDto link, final String description) {
         List<Long> tgChatIds = linkRepository.findSubscribers(link.getLink())
                 .stream()
                 .map(ChatDto::getId)

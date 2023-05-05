@@ -12,8 +12,15 @@ import java.sql.Timestamp;
 
 @Component
 public class LinkRowMapper implements RowMapper<LinkDto> {
+    /**
+     * Method to map Rows.
+     * @param rs ResultSet
+     * @param rowNum int row num
+     * @return LinkDto
+     * @throws SQLException SQLException
+     */
     @Override
-    public LinkDto mapRow(@NotNull ResultSet rs, int rowNum) throws SQLException {
+    public LinkDto mapRow(@NotNull final ResultSet rs, final int rowNum) throws SQLException {
         long id = rs.getLong("id");
         String link = rs.getString("link");
         Timestamp timeCreated = rs.getTimestamp("time_created");

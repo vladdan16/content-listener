@@ -19,23 +19,46 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
+    /**
+     * JdbcLinkDao repository.
+     */
     private final JdbcLinkDao linkRepository;
+    /**
+     * JdbcChatDao repository.
+     */
     private final JdbcChatDao chatRepository;
 
+    /**
+     * Method to add link.
+     * @param tgChatId telegram chat id
+     * @param url link
+     * @return LinkResponse
+     */
     @Override
-    public LinkResponse add(long tgChatId, @NotNull URI url) {
+    public LinkResponse add(final long tgChatId, @NotNull final URI url) {
         LinkDto link = linkRepository.add(url.toString(), tgChatId);
         return new LinkResponse(link.getId(), link.getLink());
     }
 
+    /**
+     * Method to remove link.
+     * @param tgChatId telegram chat id
+     * @param url link
+     * @return LinkResponse
+     */
     @Override
-    public LinkResponse remove(long tgChatId, @NotNull URI url) {
+    public LinkResponse remove(final long tgChatId, @NotNull final URI url) {
         LinkDto link = linkRepository.remove(url.toString(), tgChatId);
         return new LinkResponse(link.getId(), link.getLink());
     }
 
+    /**
+     * Method to get all links from database by chat id.
+     * @param tgChatId telegram chat id
+     * @return ListLinkResponse
+     */
     @Override
-    public ListLinksResponse listAll(long tgChatId) {
+    public ListLinksResponse listAll(final long tgChatId) {
         List<LinkDto> list = chatRepository.findAllLinksById(tgChatId);
         List<LinkResponse> linkResponses = new ArrayList<>();
         for (LinkDto e : list) {

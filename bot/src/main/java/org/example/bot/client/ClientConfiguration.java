@@ -8,9 +8,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class ClientConfiguration {
+    /**
+     * Base url of scrapper.
+     */
     @Value("${base-url}")
     private String baseUrl;
 
+    /**
+     * WebClient Bean for scrapper.
+     * @return WebClient instance
+     */
     @Bean
     public WebClient scrapperWebClient() {
         return WebClient.builder()

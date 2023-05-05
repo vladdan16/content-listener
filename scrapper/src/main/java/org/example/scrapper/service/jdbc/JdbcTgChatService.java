@@ -10,14 +10,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class JdbcTgChatService implements TgChatService {
+    /**
+     * JdbcChatDao repository.
+     */
     private final JdbcChatDao chatRepository;
+
+    /**
+     * Method to register chat by id.
+     * @param tgChatId telegram chat id
+     */
     @Override
-    public void register(long tgChatId) {
+    public void register(final long tgChatId) {
         chatRepository.add(tgChatId);
     }
 
+    /**
+     * Method to remove chat id.
+     * @param tgChatId telegram chat id
+     */
     @Override
-    public void unregister(long tgChatId) {
+    public void unregister(final long tgChatId) {
         chatRepository.remove(tgChatId);
     }
 }

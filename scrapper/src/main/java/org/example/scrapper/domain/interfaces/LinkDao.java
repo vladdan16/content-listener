@@ -6,11 +6,11 @@ import org.example.scrapper.domain.dto.LinkDto;
 import java.util.List;
 
 /**
- * Interface that represents Link repository
+ * Interface that represents Link repository.
  */
 public interface LinkDao {
     /**
-     * Method that adds Link to repo
+     * Method that adds Link to repo.
      * @param link String value of link
      * @param chatId id of telegram chat
      * @return Link that was added
@@ -18,7 +18,7 @@ public interface LinkDao {
     LinkDto add(String link, Long chatId);
 
     /**
-     * Method that removes links from repo
+     * Method that removes links from repo.
      * @param link String value of link
      * @param chatId id of telegram chat
      * @return Link that was removed
@@ -26,33 +26,34 @@ public interface LinkDao {
     LinkDto remove(String link, Long chatId);
 
     /**
-     * Method that finds all links in repo
+     * Method that finds all links in repo.
      * @return List of Links
      */
     List<LinkDto> findAll();
 
     /**
-     * Method that updates link in repo
+     * Method that updates link in repo.
      * @param link String value of link
      */
     void update(LinkDto link);
 
     /**
-     * Method that finds link in repo by String value
+     * Method that finds link in repo by String value.
      * @param link String value of link
      * @return Link object
      */
     LinkDto findLink(String link);
 
     /**
-     * Method that finds all Chats that subscribed to specified link
+     * Method that finds all Chats that subscribed to specified link.
      * @param link String value of link
      * @return List of Chat objects
      */
     List<ChatDto> findSubscribers(String link);
 
     /**
-     * Method that finds all old links, for example those which have not been checked for 1 minute
+     * Method that finds all old links, for example those which have not been checked for 1 minute.
+     * @param interval String value interval for postgres.
      * @return List of Links
      */
     List<LinkDto> findAllOldLinks(String interval);

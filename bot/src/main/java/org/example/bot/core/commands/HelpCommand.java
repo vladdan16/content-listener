@@ -8,13 +8,15 @@ import org.example.bot.core.UserMessageProcessor;
 import org.springframework.stereotype.Component;
 
 /**
- * Class for /help command
+ * Class for /help command.
  */
 @Component
 @RequiredArgsConstructor
-public class HelpCommand implements Command {
+public final class HelpCommand implements Command {
+    /**
+     * Client for Scrapper.
+     */
     private final ScrapperClient scrapperClient;
-
     @Override
     public String command() {
         return "/help";
@@ -26,7 +28,7 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public SendMessage handle(Update update) {
+    public SendMessage handle(final Update update) {
         StringBuilder builder = new StringBuilder();
         builder.append("Available commands:\n");
         for (Command c : UserMessageProcessor.commands()) {

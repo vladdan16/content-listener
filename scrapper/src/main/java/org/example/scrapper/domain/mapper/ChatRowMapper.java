@@ -12,8 +12,15 @@ import java.sql.Timestamp;
 @Component
 public class ChatRowMapper implements RowMapper<ChatDto> {
 
+    /**
+     * Method to mapRows.
+     * @param rs ResultSet
+     * @param rowNum int num of row
+     * @return ChatDto
+     * @throws SQLException SCQException
+     */
     @Override
-    public ChatDto mapRow(@NotNull ResultSet rs, int rowNum) throws SQLException {
+    public ChatDto mapRow(@NotNull final ResultSet rs, final int rowNum) throws SQLException {
         long id = rs.getLong("id");
         Timestamp timestamp = rs.getTimestamp("time_created");
         return new ChatDto(id, timestamp);
