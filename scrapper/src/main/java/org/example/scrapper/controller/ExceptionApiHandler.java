@@ -16,52 +16,67 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ExceptionApiHandler {
+    private static final String NOT_FOUND = "404";
 
     /**
      * Handle not valid Exception.
+     *
      * @param e Exception
      * @return ResponseEntity
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiErrorResponse> handleValidationException(@NotNull final MethodArgumentNotValidException e) {
-        List<String> errors = e.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
-        ApiErrorResponse response = new ApiErrorResponse("Validation failed", "400", e.getClass().getSimpleName(), e.getMessage(), errors);
+    public ResponseEntity<ApiErrorResponse> handleValidationException(
+        @NotNull final MethodArgumentNotValidException e
+    ) {
+        List<String> errors =
+            e.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .toList();
+        ApiErrorResponse response =
+            new ApiErrorResponse("Validation failed", "400", e.getClass().getSimpleName(), e.getMessage(), errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     /**
      * Handle chat not found Exception.
+     *
      * @param e Exception
      * @return ResponseEntity
      */
     @ExceptionHandler(InstanceNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleChatNotFoundException(@NotNull final InstanceNotFoundException e) {
         List<String> errors = List.of(Arrays.toString(e.getStackTrace()));
-        ApiErrorResponse response = new ApiErrorResponse("Chat not found", "404", e.getClass().getSimpleName(), e.getMessage(), errors);
+        ApiErrorResponse response = new ApiErrorResponse("Chat not found",
+            NOT_FOUND, e.getClass().getSimpleName(), e.getMessage(), errors
+        );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     /**
      * Handle link not found Exception.
+     *
      * @param e Exception
      * @return ResponseEntity
      */
     @ExceptionHandler(AttributeNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleLinkNotFoundException(@NotNull final InstanceNotFoundException e) {
         List<String> errors = List.of(Arrays.toString(e.getStackTrace()));
-        ApiErrorResponse response = new ApiErrorResponse("Link not found", "404", e.getClass().getSimpleName(), e.getMessage(), errors);
+        ApiErrorResponse response = new ApiErrorResponse("Link not found",
+            NOT_FOUND, e.getClass().getSimpleName(), e.getMessage(), errors
+        );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     /**
      * Handle other Exceptions.
+     *
      * @param e Exception
      * @return ResponseEntity
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleException(@NotNull final Exception e) {
         List<String> errors = List.of(Arrays.toString(e.getStackTrace()));
-        ApiErrorResponse response = new ApiErrorResponse("Internal server error", "500", e.getClass().getSimpleName(), e.getMessage(), errors);
+        ApiErrorResponse response =
+            new ApiErrorResponse("Internal server error", "500", e.getClass().getSimpleName(), e.getMessage(), errors);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }

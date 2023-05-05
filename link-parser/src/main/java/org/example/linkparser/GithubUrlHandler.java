@@ -11,6 +11,8 @@ public final class GithubUrlHandler extends UrlHandler {
      * Pattern for Github link.
      */
     private static final Pattern GITHUB_URL_PATTERN = Pattern.compile("^https://github\\.com/[^/]+/[^/]+/?$");
+    private static final int USER = 3;
+    private static final int REPO = 4;
 
     /**
      * Public constructor.
@@ -25,7 +27,7 @@ public final class GithubUrlHandler extends UrlHandler {
         Matcher matcher = GITHUB_URL_PATTERN.matcher(url);
         if (matcher.matches()) {
             String[] list = url.split("/");
-            return new GithubParseResult(list[3], list[4]);
+            return new GithubParseResult(list[USER], list[REPO]);
         } else {
             return next(url);
         }

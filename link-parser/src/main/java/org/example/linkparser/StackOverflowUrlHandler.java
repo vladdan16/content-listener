@@ -11,6 +11,7 @@ public final class StackOverflowUrlHandler extends UrlHandler {
      * Pattern for StackOverflow link.
      */
     private static final Pattern STACK_OVERFLOW_URL_PATTERN = Pattern.compile("^https://stackoverflow\\.com/questions/\\d+/.+$");
+    private static final int QUESTION = 4;
 
     /**
      * Public constructor.
@@ -25,7 +26,7 @@ public final class StackOverflowUrlHandler extends UrlHandler {
         Matcher matcher = STACK_OVERFLOW_URL_PATTERN.matcher(url);
         if (matcher.matches()) {
             String[] list = url.split("/");
-            return new StackOverflowParseResult(list[4]);
+            return new StackOverflowParseResult(list[QUESTION]);
         } else {
             return next(url);
         }
