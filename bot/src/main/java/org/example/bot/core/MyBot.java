@@ -9,16 +9,18 @@ import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.bot.core.commands.Command;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Class-wrapper for bot.
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MyBot implements AutoCloseable, UpdatesListener {
@@ -30,6 +32,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
      * UserMessageProcessor instance.
      */
     private final UserMessageProcessor userMessageProcessor;
+    private static final String ERROR = "Error while sending message: ";
 
     /**
      * void method to start our bot.
@@ -53,7 +56,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
             if (message != null) {
                 BaseResponse response = telegramBot.execute(message);
                 if (!response.isOk()) {
-                    System.out.println("Error while sending message: " + response.description());
+                    log.error(ERROR + response.description());
                 }
             }
         });
@@ -80,7 +83,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
             SendMessage message = new SendMessage(id, text);
             BaseResponse response = telegramBot.execute(message);
             if (!response.isOk()) {
-                System.out.println("Error while sending message: " + response.description());
+                log.error(ERROR + response.description());
             }
         });
     }

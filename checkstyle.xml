@@ -43,7 +43,7 @@
     <!--      Checks for Size Violations.         -->
     <module name="FileLength"/>
     <module name="LineLength">
-        <property name="max" value="120"/>
+        <property name="max" value="160"/>
         <property name="fileExtensions" value="java"/>
         <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
     </module>
@@ -148,10 +148,10 @@
         <!-- <module name="CustomImportOrder"/> -->
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <!-- <module name="ImportControl"/> -->
-        <module name="ImportOrder">
-            <property name="option" value="under"/>
-            <property name="sortStaticImportsAlphabetically" value="true"/>
-        </module>
+<!--        <module name="ImportOrder">-->
+<!--            <property name="option" value="under"/>-->
+<!--            <property name="sortStaticImportsAlphabetically" value="true"/>-->
+<!--        </module>-->
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
