@@ -12,9 +12,19 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class BotClient {
+    /**
+     * WebClient for bot.
+     */
     private final WebClient botWebClient;
 
-    public void update(long id, String url, String description, List<Long> tgChatIds) {
+    /**
+     * Method to send update to user via bot.
+     * @param id linkId
+     * @param url link
+     * @param description short description about update
+     * @param tgChatIds list of IDs
+     */
+    public void update(final long id, final String url, final String description, final List<Long> tgChatIds) {
         try {
             LinkUpdateRequest request = new LinkUpdateRequest(id, new URI(url), description, tgChatIds);
             botWebClient.post()

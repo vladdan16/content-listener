@@ -10,13 +10,14 @@ import com.pengrad.telegrambot.response.BaseResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.example.bot.core.commands.Command;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class-wrapper for bot
+ * Class-wrapper for bot.
  */
 @Component
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
     private final UserMessageProcessor userMessageProcessor;
 
     /**
-     * void method to start our bot
+     * void method to start our bot.
      */
     @PostConstruct
     public void start() {
@@ -33,6 +34,11 @@ public class MyBot implements AutoCloseable, UpdatesListener {
         setCommands();
     }
 
+    /**
+     * Method to process updates from telegram.
+     * @param list list of Updates
+     * @return int code
+     */
     @Override
     public int process(List<Update> list) {
         //return UpdatesListener.CONFIRMED_UPDATES_ALL;
@@ -49,7 +55,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
     }
 
     /**
-     * void method to close bot
+     * void method to close bot.
      */
     @Override
     public void close() {
@@ -57,7 +63,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
     }
 
     /**
-     * Method to process updates from scrapper and send to user
+     * Method to process updates from scrapper and send to user.
      * @param url Link that is tracked
      * @param description Description for user
      * @param tgChatIds List of chats where to send update
@@ -74,7 +80,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
     }
 
     /**
-     * void method to set commands dor telegram bot (Bonus task)
+     * void method to set commands dor telegram bot (Bonus task).
      */
     private void setCommands() {
         ArrayList<BotCommand> botCommands = new ArrayList<>();

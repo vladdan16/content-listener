@@ -8,10 +8,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 @RequiredArgsConstructor
 public class GithubClient {
-
+    /**
+     * GitHub WebClient.
+     */
     private final WebClient githubWebClient;
 
-    public GithubResponse fetchRepository(String owner, String repo) {
+    /**
+     * Method to fetch repository.
+     * @param owner username
+     * @param repo repo name
+     * @return GithubResponse
+     */
+    public GithubResponse fetchRepository(final String owner, final String repo) {
         return githubWebClient.get()
                 .uri("/repos/{owner}/{repo}", owner, repo)
                 .retrieve()

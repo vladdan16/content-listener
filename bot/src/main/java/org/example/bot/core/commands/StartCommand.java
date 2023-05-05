@@ -4,28 +4,33 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.example.bot.client.ScrapperClient;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
- * Class for /start command
+ * Class for /start command.
  */
 @Component
 @RequiredArgsConstructor
-public class StartCommand implements Command {
+public final class StartCommand implements Command {
+    /**
+     * Scrapper client.
+     */
     private final ScrapperClient scrapperClient;
 
-    @Override
-    public String command() {
+    @Contract(pure = true) @Override
+    public @NotNull String command() {
         return "/start";
     }
 
-    @Override
-    public String description() {
+    @Contract(pure = true) @Override
+    public @NotNull String description() {
         return "Register user";
     }
 
-    @Override
-    public SendMessage handle(Update update) {
+    @Contract("_ -> new") @Override
+    public @NotNull SendMessage handle(@NotNull final Update update) {
         long chatId = update.message().chat().id();
         scrapperClient.registerChat(chatId);
         return new SendMessage(chatId, "Welcome! Type /help for a list of commands.");

@@ -19,6 +19,12 @@ public class JdbcLinkDao {
     private final LinkRowMapper linkRowMapper;
     private final ChatRowMapper chatRowMapper;
 
+    /**
+     * Method that adds Link to repo.
+     * @param link String value of link
+     * @param chatId id of telegram chat
+     * @return Link that was added
+     */
     @Transactional
     public Link add(@NotNull String link, Long chatId) {
         Link existingLink = findLink(link);
@@ -36,6 +42,12 @@ public class JdbcLinkDao {
         return existingLink;
     }
 
+    /**
+     * Method that removes links from repo.
+     * @param link String value of link
+     * @param chatId id of telegram chat
+     * @return Link that was removed
+     */
     @Transactional
     public Link remove(String link, Long chatId) {
         Link linkDto = findLink(link);
@@ -54,11 +66,19 @@ public class JdbcLinkDao {
         return linkDto;
     }
 
-    public List<Link> findAll() {
+    /**
+     * Method that finds all links in repo.
+     * @return List of Links
+     */
+    public List<LinkDto> findAll() {
         String sql = "SELECT * FROM link";
         return jdbcTemplate.query(sql, linkRowMapper);
     }
 
+    /**
+     * Method that updates link in repo.
+     * @param link String value of link
+     */
     @Transactional
     public void update(String link, Timestamp updatedAt) {
         String sql = "UPDATE link SET time_checked = NOW() WHERE link = ?";
@@ -68,6 +88,11 @@ public class JdbcLinkDao {
         jdbcTemplate.update(sql, updatedAt, link);
     }
 
+    /**
+     * Method that finds link in repo by String value.
+     * @param link String value of link
+     * @return Link object
+     */
     public Link findLink(String link) {
         String sql = "SELECT * FROM link WHERE link.link = ?";
         List<Link> list = jdbcTemplate.query(sql, linkRowMapper, link);
@@ -77,6 +102,11 @@ public class JdbcLinkDao {
         return list.get(0);
     }
 
+    /**
+     * Method that finds all Chats that subscribed to specified link.
+     * @param link String value of link
+     * @return List of Chat objects
+     */
     public List<Chat> findSubscribers(String link) {
         String sql = """
                 SELECT * FROM chat
@@ -87,6 +117,10 @@ public class JdbcLinkDao {
         return jdbcTemplate.query(sql, chatRowMapper, link);
     }
 
+    /**
+     * Method that finds all old links, for example those which have not been checked for 1 minute.
+     * @return List of Links
+     */
     public List<Link> findAllOldLinks(@NotNull String interval) {
         String sql = " SELECT * FROM link WHERE link.time_checked < NOW() - INTERVAL '" + interval + "' OR link.time_checked IS NULL";
         return jdbcTemplate.query(sql, linkRowMapper);

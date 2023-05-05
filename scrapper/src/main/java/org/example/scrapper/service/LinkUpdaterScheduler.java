@@ -33,11 +33,17 @@ public class LinkUpdaterScheduler {
     private static final String GITHUB_DESCRIPTION = "Update appeared at Github by the following link";
     private static final String STACKOVERFLOW_DESCRIPTION = "Update appeared at Stackoverflow by the following link";
 
+    /**
+     * Method to set url parser after construction class instance.
+     */
     @PostConstruct
     public void setUrlParser() {
         parser = new UrlParser();
     }
 
+    /**
+     * Method that looks old links every N seconds.
+     */
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
         ListLinksResponse list = linkService.findAllOldLinks(INTERVAL);

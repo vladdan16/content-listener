@@ -1,7 +1,7 @@
 package org.example.linkparser;
 
 /**
- * Record for result of parsing GitHub link
+ * Record for result of parsing GitHub link.
  * @param user Name of user account on GitHub
  * @param repo Repository name
  */

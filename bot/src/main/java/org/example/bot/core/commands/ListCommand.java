@@ -6,31 +6,48 @@ import lombok.RequiredArgsConstructor;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.client.dto.LinkResponse;
 import org.example.bot.client.dto.ListLinksResponse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class for /list command
+ * Class for /list command.
  */
 @Component
 @RequiredArgsConstructor
 public class ListCommand implements Command {
+    /**
+     * Scrapper client.
+     */
     private final ScrapperClient scrapperClient;
 
+    /**
+     * Name of command.
+     * @return String value - command
+     */
     @Override
     public String command() {
         return "/list";
     }
 
+    /**
+     * Description of command.
+     * @return String value - description
+     */
     @Override
     public String description() {
         return "Command to list all tracking links";
     }
 
+    /**
+     * Method to handle update from bot.
+     * @param update Update message
+     * @return SendMessage instance for bot reply
+     */
     @Override
-    public SendMessage handle(Update update) {
+    public SendMessage handle(@NotNull final Update update) {
         long chatId = update.message().chat().id();
         ListLinksResponse response = scrapperClient.getLinks(chatId);
         List<String> links = new ArrayList<>();
