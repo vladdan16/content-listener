@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class ClientConfiguration {
+    private static final String CONTENT_TYPE = "Content-Type";
     /**
      * BAse url of bot.
      */
@@ -22,7 +23,7 @@ public class ClientConfiguration {
     public WebClient githubWebClient() {
         return WebClient.builder()
                 .baseUrl("https://api.github.com")
-                .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
 
@@ -34,7 +35,7 @@ public class ClientConfiguration {
     public WebClient stackOverflowWebClient() {
         return WebClient.builder()
                 .baseUrl("https://api.stackexchange.com")
-                .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
 
@@ -46,7 +47,7 @@ public class ClientConfiguration {
     public WebClient botWebClient() {
         return WebClient.builder()
                 .baseUrl(baseUrl)
-                .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
 }

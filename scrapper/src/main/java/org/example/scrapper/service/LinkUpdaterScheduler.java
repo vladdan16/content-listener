@@ -2,6 +2,7 @@ package org.example.scrapper.service;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.linkparser.GithubParseResult;
 import org.example.linkparser.ParseResult;
 import org.example.linkparser.StackOverflowParseResult;
@@ -23,6 +24,7 @@ import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Slf4j
 @Component
 @EnableScheduling
 @RequiredArgsConstructor
@@ -79,7 +81,7 @@ public final class LinkUpdaterScheduler {
         for (LinkDto link : list) {
             ParseResult result = parser.parseUrl(link.getLink());
             if (result == null) {
-                System.out.println("Incorrect link type");
+                log.warn("Incorrect link type");
                 continue;
             }
             switch (result.getLinkType()) {
@@ -127,7 +129,7 @@ public final class LinkUpdaterScheduler {
                         callBot(link, STACKOVERFLOW_DESCRIPTION);
                     }
                 }
-                default -> System.out.println("Unknown link");
+                default -> log.warn("Unknown link");
             }
         }
     }
