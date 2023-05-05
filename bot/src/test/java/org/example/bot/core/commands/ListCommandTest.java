@@ -46,7 +46,7 @@ public class ListCommandTest {
         when(chat.id()).thenReturn(chatId);
         when(message.chat()).thenReturn(chat);
         when(update.message()).thenReturn(message);
-        when(scrapperClient.getLinks(chatId)).thenReturn(new ListLinksResponse(Collections.emptyList(), 0));
+        when(scrapperClient.getLINKS(chatId)).thenReturn(new ListLinksResponse(Collections.emptyList(), 0));
 
         SendMessage result = listCommand.handle(update);
         SendMessage expected = new SendMessage(chatId, "There are no links to track");
@@ -64,7 +64,7 @@ public class ListCommandTest {
         List<LinkResponse> links = new ArrayList<>();
         links.add(new LinkResponse(1L, new URI("https://github.com/vladdan16/content-listener")));
         links.add(new LinkResponse(2L, new URI("https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c")));
-        when(scrapperClient.getLinks(chatId)).thenReturn(new ListLinksResponse(links, links.size()));
+        when(scrapperClient.getLINKS(chatId)).thenReturn(new ListLinksResponse(links, links.size()));
 
         SendMessage result = listCommand.handle(update);
         SendMessage expected = new SendMessage(chatId, """

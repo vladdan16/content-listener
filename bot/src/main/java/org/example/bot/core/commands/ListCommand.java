@@ -49,7 +49,7 @@ public class ListCommand implements Command {
     @Override
     public SendMessage handle(@NotNull final Update update) {
         long chatId = update.message().chat().id();
-        ListLinksResponse response = scrapperClient.getLinks(chatId);
+        ListLinksResponse response = scrapperClient.getLINKS(chatId);
         List<String> links = new ArrayList<>();
         for (LinkResponse r : response.links()) {
             links.add(r.url().toString());

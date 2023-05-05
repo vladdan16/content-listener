@@ -20,6 +20,8 @@ public final class ScrapperClient {
      * Scrapper web client.
      */
     private final WebClient scrapperWebClient;
+    private static final String LINKS = "links";
+    private static final String PATH_SEGMENT = "/tg-chat/{id}";
 
     /**
      * Method to register chat in scrapper.
@@ -27,7 +29,7 @@ public final class ScrapperClient {
      */
     public void registerChat(final long id) {
         scrapperWebClient.post()
-                .uri("/tg-chat/{id}", id)
+                .uri(PATH_SEGMENT, id)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
@@ -39,7 +41,7 @@ public final class ScrapperClient {
      */
     public void deleteChat(final long id) {
         scrapperWebClient.delete()
-                .uri("/tg-chat/{id}", id)
+                .uri(PATH_SEGMENT, id)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
@@ -50,10 +52,10 @@ public final class ScrapperClient {
      * @param id telegram chat id
      * @return ListLinkResponse
      */
-    public ListLinksResponse getLinks(final long id) {
+    public ListLinksResponse getLINKS(final long id) {
         return scrapperWebClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .pathSegment("links")
+                        .pathSegment(LINKS)
                         .queryParam("id", id)
                         .build())
                 .retrieve()
@@ -70,7 +72,7 @@ public final class ScrapperClient {
     public LinkResponse addLink(final long id, final AddLinkRequest request) {
         return scrapperWebClient.post()
                 .uri(uriBuilder -> uriBuilder
-                        .pathSegment("links")
+                        .pathSegment(LINKS)
                         .queryParam("id", id)
                         .build())
                 .body(BodyInserters.fromValue(request))
@@ -88,7 +90,7 @@ public final class ScrapperClient {
     public LinkResponse removeLink(final long id, final RemoveLinkRequest request) {
         return scrapperWebClient.method(HttpMethod.DELETE)
                 .uri(uriBuilder -> uriBuilder
-                        .pathSegment("links")
+                        .pathSegment(LINKS)
                         .queryParam("id", id)
                         .build())
                 .body(BodyInserters.fromValue(request))
