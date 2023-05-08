@@ -1,7 +1,7 @@
 package org.example.scrapper.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.service.interfaces.TgChatService;
+import org.example.scrapper.service.interfaces.ChatService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tg-chat")
 @RequiredArgsConstructor
 public class ScrapperChatController {
-    private final TgChatService chatService;
+    private final ChatService chatService;
 
     @PostMapping("/{id}")
     public ResponseEntity<Void> registerChat(@PathVariable Long id) {

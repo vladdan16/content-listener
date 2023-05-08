@@ -1,4 +1,4 @@
-package org.example.scrapper.domain.dto;
+package org.example.scrapper.domain.jdbc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,14 +12,14 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatDto {
+public class Chat {
     /**
      * ID of telegram chat
      */
     private long id;
 
     /**
-     * Time when chat was rgistered
+     * Time when chat was registered
      */
     private Timestamp timeCreated;
 }

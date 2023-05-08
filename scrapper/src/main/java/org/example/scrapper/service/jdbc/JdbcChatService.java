@@ -1,15 +1,13 @@
 package org.example.scrapper.service.jdbc;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.domain.JdbcChatDao;
-import org.example.scrapper.service.interfaces.TgChatService;
-import org.springframework.stereotype.Service;
+import org.example.scrapper.domain.jdbc.JdbcChatDao;
+import org.example.scrapper.service.interfaces.ChatService;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Transactional
 @RequiredArgsConstructor
-public class JdbcTgChatService implements TgChatService {
+public class JdbcChatService implements ChatService {
     private final JdbcChatDao chatRepository;
     @Override
     public void register(long tgChatId) {
