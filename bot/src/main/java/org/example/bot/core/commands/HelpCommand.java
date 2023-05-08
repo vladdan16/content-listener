@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class HelpCommand implements Command {
-    private final ScrapperClient scrapperClient;
 
     @Override
     public String command() {
