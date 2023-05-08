@@ -7,5 +7,5 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "app")
 public record ApplicationConfig(@NotNull String test, @NotNull String token, String queue, String exchange,
-                                String routingKey, @NotNull boolean useQueue) {
+                                String routingKey) {
 }

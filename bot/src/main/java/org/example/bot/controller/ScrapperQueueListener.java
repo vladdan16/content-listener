@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,7 +15,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 @RabbitListener(queues = "${app.queue}")
-@ConditionalOnProperty(prefix = "app", name = "use-queue", havingValue = "true")
 public class ScrapperQueueListener {
     private final MyBot bot;
     private final RabbitTemplate rabbitTemplate;
