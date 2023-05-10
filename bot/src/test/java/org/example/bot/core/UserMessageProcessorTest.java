@@ -37,7 +37,7 @@ public class UserMessageProcessorTest {
         UserMessageProcessor userMessageProcessor = new UserMessageProcessor(
                 Arrays.asList(
                         new StartCommand(scrapperClient),
-                        new HelpCommand(),
+                        new HelpCommand(scrapperClient),
                         new TrackCommand(scrapperClient),
                         new UntrackCommand(scrapperClient),
                         new ListCommand(scrapperClient)

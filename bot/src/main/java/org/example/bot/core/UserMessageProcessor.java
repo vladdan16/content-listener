@@ -14,10 +14,11 @@ import java.util.List;
  */
 @Component
 public class UserMessageProcessor {
+    public static List<? extends Command> commandList;
 
     /**
      * Public constructor.
-     * @param list list of available commands
+     * @param commandList list of available commands
      */
     @Autowired
     public UserMessageProcessor(List<? extends Command> commandList) {

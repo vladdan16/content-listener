@@ -70,7 +70,7 @@ public class JdbcLinkDao {
      * Method that finds all links in repo.
      * @return List of Links
      */
-    public List<LinkDto> findAll() {
+    public List<Link> findAll() {
         String sql = "SELECT * FROM link";
         return jdbcTemplate.query(sql, linkRowMapper);
     }
