@@ -7,9 +7,10 @@ import org.example.linkparser.GithubParseResult;
 import org.example.linkparser.ParseResult;
 import org.example.linkparser.StackOverflowParseResult;
 import org.example.linkparser.UrlParser;
-import org.example.scrapper.client.BotClient;
 import org.example.scrapper.client.GithubClient;
 import org.example.scrapper.client.StackOverflowClient;
+import org.example.scrapper.client.UpdateProcessor;
+import org.example.scrapper.dto.requests.LinkUpdateRequest;
 import org.example.scrapper.dto.responses.ListLinksResponse;
 import org.example.scrapper.dto.responses.LinkResponse;
 import org.example.scrapper.dto.responses.GithubResponse;
@@ -20,6 +21,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -32,7 +35,7 @@ public class LinkUpdaterScheduler {
     private UrlParser parser;
     private final GithubClient githubClient;
     private final StackOverflowClient stackOverflowClient;
-    private final BotClient botClient;
+    private final UpdateProcessor updateProcessor;
     private final LinkService linkService;
 
     private static final String INTERVAL = "1 hour";
@@ -69,13 +72,13 @@ public class LinkUpdaterScheduler {
                     OffsetDateTime updatedAt = githubResponse.updatedAt();
                     if (link.updatedAt() != null) {
                         OffsetDateTime lastUpdated = link.updatedAt().toInstant().atOffset(updatedAt.getOffset());
-                        Timestamp updatedAtTimestamp =  new Timestamp(updatedAt.toInstant().toEpochMilli());
+                        Timestamp updatedAtTimestamp = new Timestamp(updatedAt.toInstant().toEpochMilli());
                         linkService.update(link.url(), updatedAtTimestamp);
                         if (updatedAt.isAfter(lastUpdated)) {
                             callBot(link, GITHUB_DESCRIPTION);
                         }
                     } else {
-                        Timestamp updatedAtTimestamp =  new Timestamp(updatedAt.toInstant().toEpochMilli());
+                        Timestamp updatedAtTimestamp = new Timestamp(updatedAt.toInstant().toEpochMilli());
                         linkService.update(link.url(), updatedAtTimestamp);
                         callBot(link, GITHUB_DESCRIPTION);
                     }
@@ -89,13 +92,13 @@ public class LinkUpdaterScheduler {
                     OffsetDateTime updatedAt = stackOverflowResponse.updatedAt();
                     if (link.updatedAt() != null) {
                         OffsetDateTime lastUpdated = link.updatedAt().toInstant().atOffset(updatedAt.getOffset());
-                        Timestamp updatedAtTimestamp =  new Timestamp(updatedAt.toInstant().toEpochMilli());
+                        Timestamp updatedAtTimestamp = new Timestamp(updatedAt.toInstant().toEpochMilli());
                         linkService.update(link.url(), updatedAtTimestamp);
                         if (updatedAt.isAfter(lastUpdated)) {
                             callBot(link, STACKOVERFLOW_DESCRIPTION);
                         }
                     } else {
-                        Timestamp updatedAtTimestamp =  new Timestamp(updatedAt.toInstant().toEpochMilli());
+                        Timestamp updatedAtTimestamp = new Timestamp(updatedAt.toInstant().toEpochMilli());
                         linkService.update(link.url(), updatedAtTimestamp);
                         callBot(link, STACKOVERFLOW_DESCRIPTION);
                     }
@@ -110,6 +113,12 @@ public class LinkUpdaterScheduler {
                 .stream()
                 .map(ChatResponse::id)
                 .toList();
-        botClient.update(link.id(), link.url(), description, tgChatIds);
+        LinkUpdateRequest request;
+        try {
+            request = new LinkUpdateRequest(link.id(), new URI(link.url()), description, tgChatIds);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        updateProcessor.update(request);
     }
 }
