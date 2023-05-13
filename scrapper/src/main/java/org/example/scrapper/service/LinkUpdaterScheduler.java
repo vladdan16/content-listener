@@ -2,6 +2,7 @@ package org.example.scrapper.service;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.linkparser.GithubParseResult;
 import org.example.linkparser.ParseResult;
 import org.example.linkparser.StackOverflowParseResult;
@@ -10,7 +11,11 @@ import org.example.scrapper.client.GithubClient;
 import org.example.scrapper.client.StackOverflowClient;
 import org.example.scrapper.client.UpdateProcessor;
 import org.example.scrapper.dto.requests.LinkUpdateRequest;
-import org.example.scrapper.dto.responses.*;
+import org.example.scrapper.dto.responses.ListLinksResponse;
+import org.example.scrapper.dto.responses.LinkResponse;
+import org.example.scrapper.dto.responses.GithubResponse;
+import org.example.scrapper.dto.responses.StackOverflowResponse;
+import org.example.scrapper.dto.responses.ChatResponse;
 import org.example.scrapper.service.interfaces.LinkService;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,6 +27,7 @@ import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Slf4j
 @Component
 @EnableScheduling
 @RequiredArgsConstructor
@@ -36,18 +42,24 @@ public class LinkUpdaterScheduler {
     private static final String GITHUB_DESCRIPTION = "Update appeared at Github by the following link";
     private static final String STACKOVERFLOW_DESCRIPTION = "Update appeared at Stackoverflow by the following link";
 
+    /**
+     * Method to set url parser after construction class instance.
+     */
     @PostConstruct
     public void setUrlParser() {
         parser = new UrlParser();
     }
 
+    /**
+     * Method that looks old links every N seconds.
+     */
     @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
         ListLinksResponse list = linkService.findAllOldLinks(INTERVAL);
         for (LinkResponse link : list.links()) {
             ParseResult result = parser.parseUrl(link.url());
             if (result == null) {
-                System.out.println("Incorrect link type");
+                log.warn("Incorrect link type");
                 continue;
             }
             switch (result.getLinkType()) {
@@ -91,7 +103,7 @@ public class LinkUpdaterScheduler {
                         callBot(link, STACKOVERFLOW_DESCRIPTION);
                     }
                 }
-                default -> System.out.println("Unknown link");
+                default -> log.warn("Unknown link");
             }
         }
     }

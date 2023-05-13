@@ -1,7 +1,7 @@
 package org.example.linkparser;
 
 /**
- * Record for result of parsing StackOverflow link
+ * Record for result of parsing StackOverflow link.
  * @param id question's id on StackOverflow
  */
 public record StackOverflowParseResult(String id) implements ParseResult {

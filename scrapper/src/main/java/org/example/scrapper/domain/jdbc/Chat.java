@@ -7,19 +7,19 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 /**
- * Class that represents Chat entity in repo
+ * Class that represents Chat entity in repo.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Chat {
     /**
-     * ID of telegram chat
+     * ID of telegram chat.
      */
     private long id;
 
     /**
-     * Time when chat was registered
+     * Time when chat was registered.
      */
     private Timestamp timeCreated;
 }

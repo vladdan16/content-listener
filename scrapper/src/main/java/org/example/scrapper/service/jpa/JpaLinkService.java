@@ -1,12 +1,16 @@
 package org.example.scrapper.service.jpa;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scrapper.domain.jpa.*;
+import org.example.scrapper.domain.jpa.ChatRepository;
+import org.example.scrapper.domain.jpa.LinkRepository;
+import org.example.scrapper.domain.jpa.Link;
+import org.example.scrapper.domain.jpa.Chat;
 import org.example.scrapper.dto.responses.ChatResponse;
 import org.example.scrapper.dto.responses.LinkResponse;
 import org.example.scrapper.dto.responses.ListChatResponse;
 import org.example.scrapper.dto.responses.ListLinksResponse;
 import org.example.scrapper.service.interfaces.LinkService;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
@@ -19,6 +23,12 @@ public class JpaLinkService implements LinkService {
     private final ChatRepository chatRepository;
     private final LinkRepository linkRepository;
 
+    private final static long DAYS = 24 * 60 * 60 * 1000L;
+    private final static long HOURS = 60 * 60 * 1000L;
+    private final static long MINUTES = 60 * 1000L;
+    private final static long SECONDS = 1000L;
+    private final static String CHAT_NOT_FOUND = "Chat not found";
+
     @Override
     public LinkResponse add(long tgChatId, URI url) {
         Link link = linkRepository.findLink(url.toString());
@@ -26,7 +36,7 @@ public class JpaLinkService implements LinkService {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             link = new Link(null, url.toString(), timestamp, null, null);
         }
-        Chat chat = chatRepository.findById(tgChatId).orElseThrow(() -> new EntityNotFoundException("Chat not found"));
+        Chat chat = chatRepository.findById(tgChatId).orElseThrow(() -> new EntityNotFoundException(CHAT_NOT_FOUND));
         link.getChats().add(chat);
         chat.getLinks().add(link);
         link = linkRepository.save(link);
@@ -34,8 +44,8 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
-    public LinkResponse remove(long tgChatId, URI url) {
-        Chat chat = chatRepository.findById(tgChatId).orElseThrow(() -> new EntityNotFoundException("Chat not found"));
+    public LinkResponse remove(long tgChatId, @NotNull URI url) {
+        Chat chat = chatRepository.findById(tgChatId).orElseThrow(() -> new EntityNotFoundException(CHAT_NOT_FOUND));
         Link link = linkRepository.findLink(url.toString());
         if (link == null) {
             throw new EntityNotFoundException("There is no such link");
@@ -93,10 +103,10 @@ public class JpaLinkService implements LinkService {
         String unit = parts[1];
 
         Timestamp timestamp = switch (unit) {
-            case "days" -> new Timestamp(System.currentTimeMillis() - amount * 24 * 60 * 60 * 1000L);
-            case "hours" -> new Timestamp(System.currentTimeMillis() - amount * 60 * 60 * 1000L);
-            case "minutes" -> new Timestamp(System.currentTimeMillis() - amount * 60 * 1000L);
-            case "seconds" -> new Timestamp(System.currentTimeMillis() - amount * 1000L);
+            case "days" -> new Timestamp(System.currentTimeMillis() - amount * DAYS);
+            case "hours" -> new Timestamp(System.currentTimeMillis() - amount * HOURS);
+            case "minutes" -> new Timestamp(System.currentTimeMillis() - amount * MINUTES);
+            case "seconds" -> new Timestamp(System.currentTimeMillis() - amount * SECONDS);
             default -> throw new IllegalArgumentException("Invalid interval format");
         };
         List<Link> links = linkRepository.findAllByTimeCheckedBefore(timestamp);

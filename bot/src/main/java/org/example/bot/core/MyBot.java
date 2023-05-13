@@ -8,24 +8,26 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import jakarta.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.bot.core.commands.Command;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Class-wrapper for bot
+ * Class-wrapper for bot.
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class MyBot implements AutoCloseable, UpdatesListener {
     private final TelegramBot telegramBot;
     private final UserMessageProcessor userMessageProcessor;
+    private static final String ERROR = "Error while sending message: ";
 
     /**
-     * void method to start our bot
+     * void method to start our bot.
      */
     @PostConstruct
     public void start() {
@@ -33,6 +35,11 @@ public class MyBot implements AutoCloseable, UpdatesListener {
         setCommands();
     }
 
+    /**
+     * Method to process updates from telegram.
+     * @param list list of Updates
+     * @return int code
+     */
     @Override
     public int process(List<Update> list) {
         //return UpdatesListener.CONFIRMED_UPDATES_ALL;
@@ -41,7 +48,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
             if (message != null) {
                 BaseResponse response = telegramBot.execute(message);
                 if (!response.isOk()) {
-                    System.out.println("Error while sending message: " + response.description());
+                    log.error(ERROR + response.description());
                 }
             }
         });
@@ -49,7 +56,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
     }
 
     /**
-     * void method to close bot
+     * void method to close bot.
      */
     @Override
     public void close() {
@@ -57,7 +64,7 @@ public class MyBot implements AutoCloseable, UpdatesListener {
     }
 
     /**
-     * Method to process updates from scrapper and send to user
+     * Method to process updates from scrapper and send to user.
      * @param url Link that is tracked
      * @param description Description for user
      * @param tgChatIds List of chats where to send update
@@ -68,13 +75,13 @@ public class MyBot implements AutoCloseable, UpdatesListener {
             SendMessage message = new SendMessage(id, text);
             BaseResponse response = telegramBot.execute(message);
             if (!response.isOk()) {
-                System.out.println("Error while sending message: " + response.description());
+                log.error(ERROR + response.description());
             }
         });
     }
 
     /**
-     * void method to set commands dor telegram bot (Bonus task)
+     * void method to set commands dor telegram bot (Bonus task).
      */
     private void setCommands() {
         ArrayList<BotCommand> botCommands = new ArrayList<>();

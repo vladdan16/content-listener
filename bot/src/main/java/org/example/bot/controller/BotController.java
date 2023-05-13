@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class BotController {
     private final MyBot bot;
 
+    /**
+     * Method to process updates that scrapper sends to bot.
+     * @param linkUpdateRequest Request from scrapper
+     */
     @PostMapping("/updates")
     public void processLinkUpdate(@RequestBody @NotNull LinkUpdateRequest linkUpdateRequest) {
         bot.processUpdate(linkUpdateRequest.url(), linkUpdateRequest.descriptions(), linkUpdateRequest.tgChatIds());

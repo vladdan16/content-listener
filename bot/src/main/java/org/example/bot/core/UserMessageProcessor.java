@@ -10,29 +10,32 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Class to process messages from telegram bot
+ * Class to process messages from telegram bot.
  */
 @Component
 public class UserMessageProcessor {
-
     public static List<? extends Command> commandList;
 
+    /**
+     * Public constructor.
+     * @param commandList list of available commands
+     */
     @Autowired
     public UserMessageProcessor(List<? extends Command> commandList) {
         UserMessageProcessor.commandList = commandList;
     }
 
     /**
-     * List of all possible commands
+     * List of all possible commands.
      *
-     * @return List<Command>
+     * @return List of Commands
      */
     public static List<? extends Command> commands() {
         return commandList;
     }
 
     /**
-     * Process update from telegram bot to reply to user
+     * Process update from telegram bot to reply to user.
      *
      * @param update Update from bot
      * @return SendMessage instance for our bot

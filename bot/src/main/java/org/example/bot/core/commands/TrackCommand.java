@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 /**
- * Class for /track command
+ * Class for /track command.
  */
 @Component
 @RequiredArgsConstructor

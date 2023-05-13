@@ -5,27 +5,33 @@ import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.example.bot.client.ScrapperClient;
 import org.example.bot.core.UserMessageProcessor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
- * Class for /help command
+ * Class for /help command.
  */
 @Component
 @RequiredArgsConstructor
-public class HelpCommand implements Command {
+public final class HelpCommand implements Command {
+    /**
+     * Client for Scrapper.
+     */
+    private final ScrapperClient scrapperClient;
 
-    @Override
-    public String command() {
+    @Contract(pure = true) @Override
+    public @NotNull String command() {
         return "/help";
     }
 
-    @Override
-    public String description() {
+    @Contract(pure = true) @Override
+    public @NotNull String description() {
         return "Display a list of commands";
     }
 
-    @Override
-    public SendMessage handle(Update update) {
+    @Contract("_ -> new") @Override
+    public @NotNull SendMessage handle(final Update update) {
         StringBuilder builder = new StringBuilder();
         builder.append("Available commands:\n");
         for (Command c : UserMessageProcessor.commands()) {

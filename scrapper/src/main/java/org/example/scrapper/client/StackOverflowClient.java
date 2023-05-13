@@ -7,11 +7,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
 @RequiredArgsConstructor
-public class StackOverflowClient {
-
+public final class StackOverflowClient {
+    /**
+     * StackOverflow web client.
+     */
     private final WebClient stackOverflowWebClient;
 
-    public StackOverflowResponse fetchQuestion(String questionId) {
+    /**
+     * Method to fetch question.
+     * @param questionId String question ID on StackOverflow
+     * @return StackOverflow response
+     */
+    public StackOverflowResponse fetchQuestion(final String questionId) {
         return stackOverflowWebClient.get()
                 .uri("/questions/{id}?site=stackoverflow", questionId)
                 .retrieve()
