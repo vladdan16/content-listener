@@ -4,13 +4,13 @@ global:
 
 scrape_configs:
   - job_name: 'bot'
-    metrics_path: /health/metrics
+    metrics_path: /metrics
     scheme: http
     static_configs:
       - targets: ['localhost:8082']
 
   - job_name: 'scrapper'
-    metrics_path: /health/metrics
+    metrics_path: /metrics
     scheme: http
     static_configs:
       - targets: ['localhost:8083']
